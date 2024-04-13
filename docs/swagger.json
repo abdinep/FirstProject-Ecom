@@ -1,0 +1,2058 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "ecom application",
+        "title": "swagger documentation for the application",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/": {
+            "get": {
+                "description": "Load products along with their categories and images for display on a webpage",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-LandingPage"
+                ],
+                "summary": "Landing Page",
+                "responses": {
+                    "200": {
+                        "description": "Products loaded successfully",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Failed to fetch product data",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/SalesReport/downloadexcel": {
+            "get": {
+                "description": "This can only be used by admin to  generate excel file of the sales report",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-SalesReport"
+                ],
+                "summary": "Generate Excel file  with sales report data",
+                "responses": {
+                    "200": {
+                        "description": "Excel file generated and sent successfully",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Failed to Generate  excel file",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/SalesReport/downloadpdf": {
+            "get": {
+                "description": "This can only be used by admin to  generate pdf file of the sales report",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-SalesReport"
+                ],
+                "summary": "Generate PDF file  with sales report data",
+                "responses": {
+                    "200": {
+                        "description": "PDF file generated and sent successfully",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Failed to Generate  pdf file",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/bestsell": {
+            "get": {
+                "description": "Get best sold product and category",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin- BestSell"
+                ],
+                "summary": "Get best sold product and category",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Sort by 'product' or 'category'",
+                        "name": "sort",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "best sell",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "not found",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/category": {
+            "get": {
+                "description": "Admin  can list categories",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-CategoryManagement"
+                ],
+                "summary": "List Category",
+                "responses": {
+                    "200": {
+                        "description": "Added Category",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Failed to add Category",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/category/delete/{ID}": {
+            "delete": {
+                "description": "Admin  can Delete category by selecting the category",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-CategoryManagement"
+                ],
+                "summary": "Delete Category",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Category ID",
+                        "name": "ID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleted Category",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Category not Found or Failed to Delete Category",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/category/edit/{ID}": {
+            "post": {
+                "description": "Admin  can Edit category",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-CategoryManagement"
+                ],
+                "summary": "Edit Category",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Category ID",
+                        "name": "ID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Edited Category",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Category not Found or Failed to Edit Category",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/coupon": {
+            "get": {
+                "description": "Admin  can View all the coupons",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-CouponManagement"
+                ],
+                "summary": "List Coupon",
+                "responses": {
+                    "200": {
+                        "description": "Listed all Coupons",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Coupon not Found or Failed to List Coupon",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Admin  can Add new coupons",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-CouponManagement"
+                ],
+                "summary": "Add Coupon",
+                "parameters": [
+                    {
+                        "description": "Coupon details",
+                        "name": "coupon",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.addcoupon"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Added new Coupon",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Coupo not Found or Failed to Add New Coupon",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/coupon/{ID}": {
+            "delete": {
+                "description": "Admin  can Delete coupons with selected Coupon ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-CouponManagement"
+                ],
+                "summary": "Delete Coupon",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Coupon ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleted Coupons",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Coupon not Found or Failed to Delete Coupon",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/login": {
+            "post": {
+                "description": "Logs in the Admin with email and password, returns a token to be used for authentication",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-Auth"
+                ],
+                "summary": "Login as an admin",
+                "parameters": [
+                    {
+                        "description": "Login Data",
+                        "name": "credentials",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.adminlogin"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Login Successful\".",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/logout": {
+            "get": {
+                "description": "Logs out as an admin, clear the token used for authentication",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-Auth"
+                ],
+                "summary": "Logout as an admin",
+                "responses": {
+                    "200": {
+                        "description": "Logout Successful\".",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/offer": {
+            "get": {
+                "description": "List all offer for a specific product",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-OfferManagement"
+                ],
+                "summary": "List offer",
+                "responses": {
+                    "200": {
+                        "description": "Listed all Offer",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Offer not Found or Failed to List Offer",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/offer/{ID}": {
+            "post": {
+                "description": "Add an offer for a specific product by providing its ID and offer details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-OfferManagement"
+                ],
+                "summary": "Add an offer for a product",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Product ID",
+                        "name": "ID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Offer details",
+                        "name": "offer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.addsoffer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Added new Offer",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Offer not Found or Failed to Add New Offer",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/order": {
+            "get": {
+                "description": "List all Orders",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-OrderManagement"
+                ],
+                "summary": "List Order",
+                "responses": {
+                    "200": {
+                        "description": "Listed all Orders",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Order not Found or Failed to List Orders",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/order/details/{ID}": {
+            "get": {
+                "description": "List all OrderDtails  of a specific Order",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-OrderManagement"
+                ],
+                "summary": "List OrderDetails",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Order ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Listed all OrderDetails",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Order not Found or Failed to List Orders",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/order/{ID}": {
+            "post": {
+                "description": "Change Order status of a specific Order",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-OrderManagement"
+                ],
+                "summary": "Edit Order Status",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Order ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated order status",
+                        "name": "order",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.OrderItem"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Listed all OrderDetails",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Order not Found or Failed to List Orders",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/productlist": {
+            "get": {
+                "description": "Listing All Products",
+                "consumes": [
+                    "mulipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-ProductManagement"
+                ],
+                "summary": "List Products",
+                "responses": {
+                    "200": {
+                        "description": "Listed All Products",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Failed To Fetch Products",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/products": {
+            "get": {
+                "description": "Collecting the Product Details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-ProductManagement"
+                ],
+                "summary": "Add Product",
+                "parameters": [
+                    {
+                        "description": "Collecting Product Details",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ProductHandler"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Upload Product Images",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Failed to collect  data, please check your inputs again.",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Collecting all Images of the Product",
+                "consumes": [
+                    "mulipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-ProductManagement"
+                ],
+                "summary": "Add Product Images",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "Product images to upload",
+                        "name": "images",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product added successfully",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Product already exist",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/products/{ID}": {
+            "delete": {
+                "description": "Deleting  a specific product from the database",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-ProductManagement"
+                ],
+                "summary": "Delete Products",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Prouct ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product Deleted successfully",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Product cant be deleted",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Editing all  details of a particular product",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-ProductManagement"
+                ],
+                "summary": "Edit Product Details",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Prouct ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Edit Product Data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.UpdateProduct"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product updated successfully",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Failed to update Product",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/usermanagement": {
+            "get": {
+                "description": "This will list all the users",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-UserManagement"
+                ],
+                "summary": "List User",
+                "responses": {
+                    "200": {
+                        "description": "Listed all users",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Failed to list users",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/usermanagement/block/{ID}": {
+            "patch": {
+                "description": "This will block  or unblock a particular user from the system",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-UserManagement"
+                ],
+                "summary": "Block/Unblock User",
+                "responses": {
+                    "200": {
+                        "description": "User Status Updated",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "failed to update user status",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/usermanagement/{ID}": {
+            "patch": {
+                "description": "This will edit  a particular user's information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-UserManagement"
+                ],
+                "summary": "Edit User",
+                "responses": {
+                    "200": {
+                        "description": "User updated successfully",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "failed to update user",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/cart": {
+            "get": {
+                "description": "View the products in the user's cart along with discounts and total amount",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-CartManagement"
+                ],
+                "summary": "View user's cart",
+                "responses": {
+                    "200": {
+                        "description": "User's cart",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "500": {
+                        "description": "Product not found",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "add a new product with given name, price and quantity in the cart",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-CartManagement"
+                ],
+                "summary": "Add\t new product to the database",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "New product added to cart",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "failed to add to cart",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/cart/addquantity/{ID}": {
+            "patch": {
+                "description": "Add one more quantity to a product in the user's cart",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-CartManagement"
+                ],
+                "summary": "Add quantity to a product in the cart",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Product ID",
+                        "name": "ID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Added one more quantity",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "500": {
+                        "description": "Cant add more quantity or No stock",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/cart/removequantity/{ID}": {
+            "patch": {
+                "description": "Remove one quantity from a product in the user's cart",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-CartManagement"
+                ],
+                "summary": "Remove quantity from a product in the cart",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Product ID",
+                        "name": "ID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Removed one more quantity",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to fetch data\" or \"Failed to update quantity",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/cart/{ID}": {
+            "delete": {
+                "description": "Remove a product from the user's cart based on the product ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-CartManagement"
+                ],
+                "summary": "Remove a product from the user's cart",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Product ID",
+                        "name": "ID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product removed from cart",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to fetch data\" or \"Can't delete the product",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/checkout": {
+            "post": {
+                "description": "Checkout the items in the user's cart, apply discounts, handle payment, and place the order",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-Checkout"
+                ],
+                "summary": "Checkout and place an order",
+                "parameters": [
+                    {
+                        "description": "Order details",
+                        "name": "requestBody",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.checkoutdetails"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Order Placed Successfully",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Failed to place order",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/invoice/{ID}": {
+            "get": {
+                "description": "Generate a payment invoice for a specific order and download it as a PDF",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/pdf"
+                ],
+                "tags": [
+                    "User-Invoice"
+                ],
+                "summary": "Generate payment invoice for a specific order",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Order ID",
+                        "name": "ID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PDF file generated and downloaded successfully",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to fetch invoice data or generate PDF file",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/products/rating": {
+            "post": {
+                "description": "Store or update rating for a product based on user input",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-Rating"
+                ],
+                "summary": "Store or update rating for a product",
+                "parameters": [
+                    {
+                        "description": "Rating data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.productRating"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Thanks for rating",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed to bind data or failed to update rating",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/products/review": {
+            "post": {
+                "description": "Store or update review for a product based on user input",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-Review"
+                ],
+                "summary": "Store or update review for a product",
+                "parameters": [
+                    {
+                        "description": "Review data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.productReview"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Thanks for your review",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Failed to bind data or failed to update review",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/address": {
+            "get": {
+                "description": "User can list all  addresses",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-AddressManagement"
+                ],
+                "summary": "List Address",
+                "responses": {
+                    "200": {
+                        "description": "Listed Address",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "failed to list address",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "User  can add a new address to their account",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-AddressManagement"
+                ],
+                "summary": "Add Address",
+                "parameters": [
+                    {
+                        "description": "Address details",
+                        "name": "address",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.addressAddHandler"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "New Address added",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Existing Address",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/address/{ID}": {
+            "delete": {
+                "description": "User  can delete  his own address by providing the valid address id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-AddressManagement"
+                ],
+                "summary": "Delete Address",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleted Address",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "failed to delete address",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "User  can edit their address",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-AddressManagement"
+                ],
+                "summary": "Edit Address",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Address details",
+                        "name": "address",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.addressUpdateHandler"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Updated Address",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "failed to edit address",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/logout": {
+            "get": {
+                "description": "Logs out as an user, clear the token used for authentication",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-Auth"
+                ],
+                "summary": "Logout as an User",
+                "responses": {
+                    "200": {
+                        "description": "Logout Successful\".",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/profile": {
+            "get": {
+                "description": "Get user details",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-Profile"
+                ],
+                "summary": "Get user details",
+                "responses": {
+                    "200": {
+                        "description": "listed Profile Details",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Failed to list Profile Details",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Edit user details",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-Profile"
+                ],
+                "summary": "Edit user details",
+                "responses": {
+                    "200": {
+                        "description": "Edited User Details",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Failed to edit User Details",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/profile/order": {
+            "get": {
+                "description": "View orders placed by the authenticated user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-OrderManagement"
+                ],
+                "summary": "View orders placed by user",
+                "responses": {
+                    "200": {
+                        "description": "Orders listed successfully",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Failed to fetch order data",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/profile/order/{ID}": {
+            "patch": {
+                "description": "cancel order placed by the authenticated user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-OrderManagement"
+                ],
+                "summary": "Cancel order placed by user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Order ID",
+                        "name": "ID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Order canceled successfully",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Failed to fetch order details",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/profile/orderdetails/{ID}": {
+            "get": {
+                "description": "View order details placed by the authenticated user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-OrderManagement"
+                ],
+                "summary": "View order details placed by user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Order ID",
+                        "name": "ID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Order details listed successfully",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Failed to fetch order details",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/registration": {
+            "post": {
+                "description": "Collecting the New User data and Send  an OTP to verify Email ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-Auth"
+                ],
+                "summary": "User Signup",
+                "parameters": [
+                    {
+                        "description": "SignUp Request Body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.signupdata"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": " Successfuly sent OTP\".",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Failed to sent OTP.",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/registration/otp": {
+            "post": {
+                "description": "Validating OTP",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-Auth"
+                ],
+                "summary": "OTP Check",
+                "parameters": [
+                    {
+                        "description": "Otp check",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.otpvalidation"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": " Successfully signed up",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Failed to Signup",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/registration/resendotp": {
+            "post": {
+                "description": "This API is used for resending the OTP",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-Auth"
+                ],
+                "summary": "Resend OTP",
+                "responses": {
+                    "200": {
+                        "description": " Resent OTP",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Failed to send OTP",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/search": {
+            "get": {
+                "description": "User can search products  by name, category or price range. It returns a list of product objects that match",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-Search"
+                ],
+                "summary": "Advanced Search",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Search query",
+                        "name": "query",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sorting criteria: price_low_to_high, price_high_to_low, new_arrivals, category, a_to_z, z_to_a, popularity",
+                        "name": "sort",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of products",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "failed to fetch products",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/signin": {
+            "post": {
+                "description": "Logs in the User with email and password, returns a token to be used for authentication",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-Auth"
+                ],
+                "summary": "Login as an User",
+                "parameters": [
+                    {
+                        "description": "Login Data",
+                        "name": "credentials",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.userlogin"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Login Successful\".",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/{ID}": {
+            "get": {
+                "description": "Load products along with their details and recommended products",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-LandingPage"
+                ],
+                "summary": "Product Details",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Product ID",
+                        "name": "ID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Products details loaded successfully",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Failed to fetch product data",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "controllers.adminlogin": {
+            "type": "object",
+            "properties": {
+                "adminMail": {
+                    "type": "string"
+                },
+                "adminPassword": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.otpvalidation": {
+            "type": "object",
+            "properties": {
+                "otp": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.signupdata": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "mobile": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.userlogin": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "handlers.ProductHandler": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "imagePath1": {
+                    "type": "string"
+                },
+                "imagePath2": {
+                    "type": "string"
+                },
+                "imagePath3": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "integer"
+                },
+                "prodName": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "size": {
+                    "type": "integer"
+                }
+            }
+        },
+        "handlers.UpdateProduct": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "imagePath1": {
+                    "type": "string"
+                },
+                "imagePath2": {
+                    "type": "string"
+                },
+                "imagePath3": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "integer"
+                },
+                "prodName": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "size": {
+                    "type": "integer"
+                }
+            }
+        },
+        "handlers.addcoupon": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "condition": {
+                    "type": "integer"
+                },
+                "discount": {
+                    "type": "number"
+                },
+                "validfrom": {
+                    "type": "string"
+                },
+                "validto": {
+                    "type": "string"
+                }
+            }
+        },
+        "handlers.addressAddHandler": {
+            "type": "object",
+            "properties": {
+                "address_type": {
+                    "type": "string"
+                },
+                "user_address": {
+                    "type": "string"
+                },
+                "user_city": {
+                    "type": "string"
+                },
+                "user_country": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "user_phone": {
+                    "type": "integer"
+                },
+                "user_pincode": {
+                    "type": "integer"
+                },
+                "user_state": {
+                    "type": "string"
+                }
+            }
+        },
+        "handlers.addressUpdateHandler": {
+            "type": "object",
+            "properties": {
+                "address_type": {
+                    "type": "string"
+                },
+                "user_address": {
+                    "type": "string"
+                },
+                "user_city": {
+                    "type": "string"
+                },
+                "user_country": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "user_phone": {
+                    "type": "integer"
+                },
+                "user_pincode": {
+                    "type": "integer"
+                },
+                "user_state": {
+                    "type": "string"
+                }
+            }
+        },
+        "handlers.addsoffer": {
+            "type": "object",
+            "properties": {
+                "Amount": {
+                    "type": "number"
+                },
+                "Expire": {
+                    "type": "string"
+                },
+                "OfferName": {
+                    "type": "string"
+                },
+                "created": {
+                    "type": "string"
+                },
+                "productId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "handlers.checkoutdetails": {
+            "type": "object",
+            "properties": {
+                "address_id": {
+                    "type": "integer"
+                },
+                "coupon_code": {
+                    "type": "string"
+                },
+                "delivery_charge": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "orderDate": {
+                    "type": "string"
+                },
+                "orderPrice": {
+                    "type": "integer"
+                },
+                "payment_method": {
+                    "type": "string"
+                },
+                "updateDate": {
+                    "type": "string"
+                },
+                "userID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "handlers.productRating": {
+            "type": "object",
+            "properties": {
+                "rating_product": {
+                    "description": "Users     int `json:\"rating_user\"`",
+                    "type": "integer"
+                },
+                "rating_value": {
+                    "type": "integer"
+                }
+            }
+        },
+        "handlers.productReview": {
+            "type": "object",
+            "properties": {
+                "review": {
+                    "type": "string"
+                },
+                "review_product": {
+                    "type": "integer"
+                },
+                "review_user": {
+                    "type": "integer"
+                },
+                "time": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.OrderItem": {
+            "type": "object"
+        }
+    }
+}

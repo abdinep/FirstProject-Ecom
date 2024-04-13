@@ -1,0 +1,1362 @@
+basePath: /
+definitions:
+  controllers.adminlogin:
+    properties:
+      adminMail:
+        type: string
+      adminPassword:
+        type: string
+    type: object
+  controllers.otpvalidation:
+    properties:
+      otp:
+        type: string
+    type: object
+  controllers.signupdata:
+    properties:
+      email:
+        type: string
+      gender:
+        type: string
+      mobile:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  controllers.userlogin:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  handlers.ProductHandler:
+    properties:
+      category:
+        type: integer
+      description:
+        type: string
+      imagePath1:
+        type: string
+      imagePath2:
+        type: string
+      imagePath3:
+        type: string
+      price:
+        type: integer
+      prodName:
+        type: string
+      quantity:
+        type: integer
+      size:
+        type: integer
+    type: object
+  handlers.UpdateProduct:
+    properties:
+      category:
+        type: integer
+      description:
+        type: string
+      imagePath1:
+        type: string
+      imagePath2:
+        type: string
+      imagePath3:
+        type: string
+      price:
+        type: integer
+      prodName:
+        type: string
+      quantity:
+        type: integer
+      size:
+        type: integer
+    type: object
+  handlers.addcoupon:
+    properties:
+      code:
+        type: string
+      condition:
+        type: integer
+      discount:
+        type: number
+      validfrom:
+        type: string
+      validto:
+        type: string
+    type: object
+  handlers.addressAddHandler:
+    properties:
+      address_type:
+        type: string
+      user_address:
+        type: string
+      user_city:
+        type: string
+      user_country:
+        type: string
+      user_id:
+        type: integer
+      user_phone:
+        type: integer
+      user_pincode:
+        type: integer
+      user_state:
+        type: string
+    type: object
+  handlers.addressUpdateHandler:
+    properties:
+      address_type:
+        type: string
+      user_address:
+        type: string
+      user_city:
+        type: string
+      user_country:
+        type: string
+      user_id:
+        type: integer
+      user_phone:
+        type: integer
+      user_pincode:
+        type: integer
+      user_state:
+        type: string
+    type: object
+  handlers.addsoffer:
+    properties:
+      Amount:
+        type: number
+      Expire:
+        type: string
+      OfferName:
+        type: string
+      created:
+        type: string
+      productId:
+        type: integer
+    type: object
+  handlers.checkoutdetails:
+    properties:
+      address_id:
+        type: integer
+      coupon_code:
+        type: string
+      delivery_charge:
+        type: integer
+      id:
+        type: integer
+      orderDate:
+        type: string
+      orderPrice:
+        type: integer
+      payment_method:
+        type: string
+      updateDate:
+        type: string
+      userID:
+        type: integer
+    type: object
+  handlers.productRating:
+    properties:
+      rating_product:
+        description: Users     int `json:"rating_user"`
+        type: integer
+      rating_value:
+        type: integer
+    type: object
+  handlers.productReview:
+    properties:
+      review:
+        type: string
+      review_product:
+        type: integer
+      review_user:
+        type: integer
+      time:
+        type: string
+    type: object
+  models.OrderItem:
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: ecom application
+  title: swagger documentation for the application
+  version: "1.0"
+paths:
+  /:
+    get:
+      consumes:
+      - application/json
+      description: Load products along with their categories and images for display
+        on a webpage
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Products loaded successfully
+          schema:
+            type: json
+        "401":
+          description: Failed to fetch product data
+          schema:
+            type: json
+      summary: Landing Page
+      tags:
+      - User-LandingPage
+  /{ID}:
+    get:
+      description: Load products along with their details and recommended products
+      parameters:
+      - description: Product ID
+        in: path
+        name: ID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Products details loaded successfully
+          schema:
+            type: json
+        "401":
+          description: Failed to fetch product data
+          schema:
+            type: json
+      summary: Product Details
+      tags:
+      - User-LandingPage
+  /admin/SalesReport/downloadexcel:
+    get:
+      consumes:
+      - application/json
+      description: This can only be used by admin to  generate excel file of the sales
+        report
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Excel file generated and sent successfully
+          schema:
+            type: json
+        "401":
+          description: Failed to Generate  excel file
+          schema:
+            type: json
+      summary: Generate Excel file  with sales report data
+      tags:
+      - Admin-SalesReport
+  /admin/SalesReport/downloadpdf:
+    get:
+      consumes:
+      - application/json
+      description: This can only be used by admin to  generate pdf file of the sales
+        report
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: PDF file generated and sent successfully
+          schema:
+            type: json
+        "401":
+          description: Failed to Generate  pdf file
+          schema:
+            type: json
+      summary: Generate PDF file  with sales report data
+      tags:
+      - Admin-SalesReport
+  /admin/bestsell:
+    get:
+      consumes:
+      - application/json
+      description: Get best sold product and category
+      parameters:
+      - description: Sort by 'product' or 'category'
+        in: query
+        name: sort
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: best sell
+          schema:
+            type: json
+        "401":
+          description: not found
+          schema:
+            type: json
+      summary: Get best sold product and category
+      tags:
+      - Admin- BestSell
+  /admin/category:
+    get:
+      consumes:
+      - application/json
+      description: Admin  can list categories
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Added Category
+          schema:
+            type: json
+        "401":
+          description: Failed to add Category
+          schema:
+            type: json
+      summary: List Category
+      tags:
+      - Admin-CategoryManagement
+  /admin/category/delete/{ID}:
+    delete:
+      consumes:
+      - application/json
+      description: Admin  can Delete category by selecting the category
+      parameters:
+      - description: Category ID
+        in: path
+        name: ID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Deleted Category
+          schema:
+            type: json
+        "401":
+          description: Category not Found or Failed to Delete Category
+          schema:
+            type: json
+      summary: Delete Category
+      tags:
+      - Admin-CategoryManagement
+  /admin/category/edit/{ID}:
+    post:
+      consumes:
+      - application/json
+      description: Admin  can Edit category
+      parameters:
+      - description: Category ID
+        in: path
+        name: ID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Edited Category
+          schema:
+            type: json
+        "401":
+          description: Category not Found or Failed to Edit Category
+          schema:
+            type: json
+      summary: Edit Category
+      tags:
+      - Admin-CategoryManagement
+  /admin/coupon:
+    get:
+      consumes:
+      - application/json
+      description: Admin  can View all the coupons
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Listed all Coupons
+          schema:
+            type: json
+        "401":
+          description: Coupon not Found or Failed to List Coupon
+          schema:
+            type: json
+      summary: List Coupon
+      tags:
+      - Admin-CouponManagement
+    post:
+      consumes:
+      - application/json
+      description: Admin  can Add new coupons
+      parameters:
+      - description: Coupon details
+        in: body
+        name: coupon
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.addcoupon'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Added new Coupon
+          schema:
+            type: json
+        "401":
+          description: Coupo not Found or Failed to Add New Coupon
+          schema:
+            type: json
+      summary: Add Coupon
+      tags:
+      - Admin-CouponManagement
+  /admin/coupon/{ID}:
+    delete:
+      consumes:
+      - application/json
+      description: Admin  can Delete coupons with selected Coupon ID
+      parameters:
+      - description: Coupon ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Deleted Coupons
+          schema:
+            type: json
+        "401":
+          description: Coupon not Found or Failed to Delete Coupon
+          schema:
+            type: json
+      summary: Delete Coupon
+      tags:
+      - Admin-CouponManagement
+  /admin/login:
+    post:
+      consumes:
+      - application/json
+      description: Logs in the Admin with email and password, returns a token to be
+        used for authentication
+      parameters:
+      - description: Login Data
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.adminlogin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Login Successful".
+          schema:
+            type: json
+        "401":
+          description: Unauthorized.
+          schema:
+            type: json
+      summary: Login as an admin
+      tags:
+      - Admin-Auth
+  /admin/logout:
+    get:
+      consumes:
+      - application/json
+      description: Logs out as an admin, clear the token used for authentication
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Logout Successful".
+          schema:
+            type: json
+        "401":
+          description: Unauthorized.
+          schema:
+            type: json
+      summary: Logout as an admin
+      tags:
+      - Admin-Auth
+  /admin/offer:
+    get:
+      consumes:
+      - application/json
+      description: List all offer for a specific product
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Listed all Offer
+          schema:
+            type: json
+        "401":
+          description: Offer not Found or Failed to List Offer
+          schema:
+            type: json
+      summary: List offer
+      tags:
+      - Admin-OfferManagement
+  /admin/offer/{ID}:
+    post:
+      consumes:
+      - application/json
+      description: Add an offer for a specific product by providing its ID and offer
+        details
+      parameters:
+      - description: Product ID
+        in: path
+        name: ID
+        required: true
+        type: string
+      - description: Offer details
+        in: body
+        name: offer
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.addsoffer'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Added new Offer
+          schema:
+            type: json
+        "401":
+          description: Offer not Found or Failed to Add New Offer
+          schema:
+            type: json
+      summary: Add an offer for a product
+      tags:
+      - Admin-OfferManagement
+  /admin/order:
+    get:
+      consumes:
+      - application/json
+      description: List all Orders
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Listed all Orders
+          schema:
+            type: json
+        "401":
+          description: Order not Found or Failed to List Orders
+          schema:
+            type: json
+      summary: List Order
+      tags:
+      - Admin-OrderManagement
+  /admin/order/{ID}:
+    post:
+      consumes:
+      - application/json
+      description: Change Order status of a specific Order
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated order status
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/models.OrderItem'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Listed all OrderDetails
+          schema:
+            type: json
+        "401":
+          description: Order not Found or Failed to List Orders
+          schema:
+            type: json
+      summary: Edit Order Status
+      tags:
+      - Admin-OrderManagement
+  /admin/order/details/{ID}:
+    get:
+      consumes:
+      - application/json
+      description: List all OrderDtails  of a specific Order
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Listed all OrderDetails
+          schema:
+            type: json
+        "401":
+          description: Order not Found or Failed to List Orders
+          schema:
+            type: json
+      summary: List OrderDetails
+      tags:
+      - Admin-OrderManagement
+  /admin/productlist:
+    get:
+      consumes:
+      - mulipart/form-data
+      description: Listing All Products
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Listed All Products
+          schema:
+            type: json
+        "401":
+          description: Failed To Fetch Products
+          schema:
+            type: json
+      summary: List Products
+      tags:
+      - Admin-ProductManagement
+  /admin/products:
+    get:
+      consumes:
+      - application/json
+      description: Collecting the Product Details
+      parameters:
+      - description: Collecting Product Details
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.ProductHandler'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Upload Product Images
+          schema:
+            type: json
+        "401":
+          description: Failed to collect  data, please check your inputs again.
+          schema:
+            type: json
+      summary: Add Product
+      tags:
+      - Admin-ProductManagement
+    post:
+      consumes:
+      - mulipart/form-data
+      description: Collecting all Images of the Product
+      parameters:
+      - description: Product images to upload
+        in: formData
+        name: images
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product added successfully
+          schema:
+            type: json
+        "401":
+          description: Product already exist
+          schema:
+            type: json
+      summary: Add Product Images
+      tags:
+      - Admin-ProductManagement
+  /admin/products/{ID}:
+    delete:
+      consumes:
+      - application/json
+      description: Deleting  a specific product from the database
+      parameters:
+      - description: Prouct ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product Deleted successfully
+          schema:
+            type: json
+        "401":
+          description: Product cant be deleted
+          schema:
+            type: json
+      summary: Delete Products
+      tags:
+      - Admin-ProductManagement
+    patch:
+      consumes:
+      - application/json
+      description: Editing all  details of a particular product
+      parameters:
+      - description: Prouct ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Edit Product Data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.UpdateProduct'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product updated successfully
+          schema:
+            type: json
+        "401":
+          description: Failed to update Product
+          schema:
+            type: json
+      summary: Edit Product Details
+      tags:
+      - Admin-ProductManagement
+  /admin/usermanagement:
+    get:
+      consumes:
+      - application/json
+      description: This will list all the users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Listed all users
+          schema:
+            type: json
+        "401":
+          description: Failed to list users
+          schema:
+            type: json
+      summary: List User
+      tags:
+      - Admin-UserManagement
+  /admin/usermanagement/{ID}:
+    patch:
+      consumes:
+      - application/json
+      description: This will edit  a particular user's information
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User updated successfully
+          schema:
+            type: json
+        "401":
+          description: failed to update user
+          schema:
+            type: json
+      summary: Edit User
+      tags:
+      - Admin-UserManagement
+  /admin/usermanagement/block/{ID}:
+    patch:
+      consumes:
+      - application/json
+      description: This will block  or unblock a particular user from the system
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User Status Updated
+          schema:
+            type: json
+        "401":
+          description: failed to update user status
+          schema:
+            type: json
+      summary: Block/Unblock User
+      tags:
+      - Admin-UserManagement
+  /cart:
+    get:
+      consumes:
+      - application/json
+      description: View the products in the user's cart along with discounts and total
+        amount
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User's cart
+          schema:
+            type: json
+        "500":
+          description: Product not found
+          schema:
+            type: json
+      summary: View user's cart
+      tags:
+      - User-CartManagement
+    post:
+      consumes:
+      - application/json
+      description: add a new product with given name, price and quantity in the cart
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: New product added to cart
+          schema:
+            type: json
+        "401":
+          description: failed to add to cart
+          schema:
+            type: json
+      summary: "Add\t new product to the database"
+      tags:
+      - User-CartManagement
+  /cart/{ID}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove a product from the user's cart based on the product ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: ID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product removed from cart
+          schema:
+            type: json
+        "500":
+          description: Failed to fetch data" or "Can't delete the product
+          schema:
+            type: json
+      summary: Remove a product from the user's cart
+      tags:
+      - User-CartManagement
+  /cart/addquantity/{ID}:
+    patch:
+      consumes:
+      - application/json
+      description: Add one more quantity to a product in the user's cart
+      parameters:
+      - description: Product ID
+        in: path
+        name: ID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Added one more quantity
+          schema:
+            type: json
+        "500":
+          description: Cant add more quantity or No stock
+          schema:
+            type: json
+      summary: Add quantity to a product in the cart
+      tags:
+      - User-CartManagement
+  /cart/removequantity/{ID}:
+    patch:
+      consumes:
+      - application/json
+      description: Remove one quantity from a product in the user's cart
+      parameters:
+      - description: Product ID
+        in: path
+        name: ID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Removed one more quantity
+          schema:
+            type: json
+        "500":
+          description: Failed to fetch data" or "Failed to update quantity
+          schema:
+            type: json
+      summary: Remove quantity from a product in the cart
+      tags:
+      - User-CartManagement
+  /checkout:
+    post:
+      consumes:
+      - application/json
+      description: Checkout the items in the user's cart, apply discounts, handle
+        payment, and place the order
+      parameters:
+      - description: Order details
+        in: body
+        name: requestBody
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.checkoutdetails'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Order Placed Successfully
+          schema:
+            type: json
+        "401":
+          description: Failed to place order
+          schema:
+            type: json
+      summary: Checkout and place an order
+      tags:
+      - User-Checkout
+  /invoice/{ID}:
+    get:
+      consumes:
+      - application/json
+      description: Generate a payment invoice for a specific order and download it
+        as a PDF
+      parameters:
+      - description: Order ID
+        in: path
+        name: ID
+        required: true
+        type: string
+      produces:
+      - application/pdf
+      responses:
+        "200":
+          description: PDF file generated and downloaded successfully
+          schema:
+            type: json
+        "500":
+          description: Failed to fetch invoice data or generate PDF file
+          schema:
+            type: json
+      summary: Generate payment invoice for a specific order
+      tags:
+      - User-Invoice
+  /products/rating:
+    post:
+      consumes:
+      - application/json
+      description: Store or update rating for a product based on user input
+      parameters:
+      - description: Rating data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.productRating'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Thanks for rating
+          schema:
+            type: json
+        "400":
+          description: Failed to bind data or failed to update rating
+          schema:
+            type: json
+      summary: Store or update rating for a product
+      tags:
+      - User-Rating
+  /products/review:
+    post:
+      consumes:
+      - application/json
+      description: Store or update review for a product based on user input
+      parameters:
+      - description: Review data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.productReview'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Thanks for your review
+          schema:
+            type: json
+        "401":
+          description: Failed to bind data or failed to update review
+          schema:
+            type: json
+      summary: Store or update review for a product
+      tags:
+      - User-Review
+  /user/address:
+    get:
+      consumes:
+      - application/json
+      description: User can list all  addresses
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Listed Address
+          schema:
+            type: json
+        "401":
+          description: failed to list address
+          schema:
+            type: json
+      summary: List Address
+      tags:
+      - User-AddressManagement
+    post:
+      consumes:
+      - application/json
+      description: User  can add a new address to their account
+      parameters:
+      - description: Address details
+        in: body
+        name: address
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.addressAddHandler'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: New Address added
+          schema:
+            type: json
+        "401":
+          description: Existing Address
+          schema:
+            type: json
+      summary: Add Address
+      tags:
+      - User-AddressManagement
+  /user/address/{ID}:
+    delete:
+      consumes:
+      - application/json
+      description: User  can delete  his own address by providing the valid address
+        id
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Deleted Address
+          schema:
+            type: json
+        "401":
+          description: failed to delete address
+          schema:
+            type: json
+      summary: Delete Address
+      tags:
+      - User-AddressManagement
+    patch:
+      consumes:
+      - application/json
+      description: User  can edit their address
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: integer
+      - description: Address details
+        in: body
+        name: address
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.addressUpdateHandler'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated Address
+          schema:
+            type: json
+        "401":
+          description: failed to edit address
+          schema:
+            type: json
+      summary: Edit Address
+      tags:
+      - User-AddressManagement
+  /user/logout:
+    get:
+      consumes:
+      - application/json
+      description: Logs out as an user, clear the token used for authentication
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Logout Successful".
+          schema:
+            type: json
+        "401":
+          description: Unauthorized.
+          schema:
+            type: json
+      summary: Logout as an User
+      tags:
+      - User-Auth
+  /user/profile:
+    get:
+      description: Get user details
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: listed Profile Details
+          schema:
+            type: json
+        "401":
+          description: Failed to list Profile Details
+          schema:
+            type: json
+      summary: Get user details
+      tags:
+      - User-Profile
+    patch:
+      description: Edit user details
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Edited User Details
+          schema:
+            type: json
+        "401":
+          description: Failed to edit User Details
+          schema:
+            type: json
+      summary: Edit user details
+      tags:
+      - User-Profile
+  /user/profile/order:
+    get:
+      consumes:
+      - application/json
+      description: View orders placed by the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Orders listed successfully
+          schema:
+            type: json
+        "401":
+          description: Failed to fetch order data
+          schema:
+            type: json
+      summary: View orders placed by user
+      tags:
+      - User-OrderManagement
+  /user/profile/order/{ID}:
+    patch:
+      consumes:
+      - application/json
+      description: cancel order placed by the authenticated user
+      parameters:
+      - description: Order ID
+        in: path
+        name: ID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Order canceled successfully
+          schema:
+            type: json
+        "401":
+          description: Failed to fetch order details
+          schema:
+            type: json
+      summary: Cancel order placed by user
+      tags:
+      - User-OrderManagement
+  /user/profile/orderdetails/{ID}:
+    get:
+      consumes:
+      - application/json
+      description: View order details placed by the authenticated user
+      parameters:
+      - description: Order ID
+        in: path
+        name: ID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Order details listed successfully
+          schema:
+            type: json
+        "401":
+          description: Failed to fetch order details
+          schema:
+            type: json
+      summary: View order details placed by user
+      tags:
+      - User-OrderManagement
+  /user/registration:
+    post:
+      consumes:
+      - application/json
+      description: Collecting the New User data and Send  an OTP to verify Email ID
+      parameters:
+      - description: SignUp Request Body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.signupdata'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ' Successfuly sent OTP".'
+          schema:
+            type: json
+        "401":
+          description: Failed to sent OTP.
+          schema:
+            type: json
+      summary: User Signup
+      tags:
+      - User-Auth
+  /user/registration/otp:
+    post:
+      consumes:
+      - application/json
+      description: Validating OTP
+      parameters:
+      - description: Otp check
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.otpvalidation'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ' Successfully signed up'
+          schema:
+            type: json
+        "401":
+          description: Failed to Signup
+          schema:
+            type: json
+      summary: OTP Check
+      tags:
+      - User-Auth
+  /user/registration/resendotp:
+    post:
+      consumes:
+      - application/json
+      description: This API is used for resending the OTP
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ' Resent OTP'
+          schema:
+            type: json
+        "401":
+          description: Failed to send OTP
+          schema:
+            type: json
+      summary: Resend OTP
+      tags:
+      - User-Auth
+  /user/search:
+    get:
+      consumes:
+      - application/json
+      description: User can search products  by name, category or price range. It
+        returns a list of product objects that match
+      parameters:
+      - description: Search query
+        in: query
+        name: query
+        type: string
+      - description: 'Sorting criteria: price_low_to_high, price_high_to_low, new_arrivals,
+          category, a_to_z, z_to_a, popularity'
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of products
+          schema:
+            type: json
+        "401":
+          description: failed to fetch products
+          schema:
+            type: json
+      summary: Advanced Search
+      tags:
+      - User-Search
+  /user/signin:
+    post:
+      consumes:
+      - application/json
+      description: Logs in the User with email and password, returns a token to be
+        used for authentication
+      parameters:
+      - description: Login Data
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.userlogin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Login Successful".
+          schema:
+            type: json
+        "401":
+          description: Unauthorized.
+          schema:
+            type: json
+      summary: Login as an User
+      tags:
+      - User-Auth
+swagger: "2.0"
