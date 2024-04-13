@@ -1741,6 +1741,109 @@
                 }
             }
         },
+        "/user/wishlist": {
+            "get": {
+                "description": "Lists the products in the user's wishlist.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-Wishlist"
+                ],
+                "summary": "List wishlist",
+                "responses": {
+                    "200": {
+                        "description": "Listed Products from the wishlist",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Product not found",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/wishlist/{ID}": {
+            "post": {
+                "description": "Adds a product to the user's wishlist.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-Wishlist"
+                ],
+                "summary": "Add product to wishlist",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Product ID",
+                        "name": "ID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product added to wishlist",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Product already added to wishlist",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Removes a product from the user's wishlist.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-Wishlist"
+                ],
+                "summary": "Remove product from wishlist",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Product ID",
+                        "name": "ID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product removed from wishlist",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Cant Delete the Product\",",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
         "/{ID}": {
             "get": {
                 "description": "Load products along with their details and recommended products",

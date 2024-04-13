@@ -1359,4 +1359,72 @@ paths:
       summary: Login as an User
       tags:
       - User-Auth
+  /user/wishlist:
+    get:
+      consumes:
+      - application/json
+      description: Lists the products in the user's wishlist.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Listed Products from the wishlist
+          schema:
+            type: json
+        "401":
+          description: Product not found
+          schema:
+            type: json
+      summary: List wishlist
+      tags:
+      - User-Wishlist
+  /user/wishlist/{ID}:
+    delete:
+      consumes:
+      - application/json
+      description: Removes a product from the user's wishlist.
+      parameters:
+      - description: Product ID
+        in: path
+        name: ID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product removed from wishlist
+          schema:
+            type: json
+        "401":
+          description: Cant Delete the Product",
+          schema:
+            type: json
+      summary: Remove product from wishlist
+      tags:
+      - User-Wishlist
+    post:
+      consumes:
+      - application/json
+      description: Adds a product to the user's wishlist.
+      parameters:
+      - description: Product ID
+        in: path
+        name: ID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product added to wishlist
+          schema:
+            type: json
+        "401":
+          description: Product already added to wishlist
+          schema:
+            type: json
+      summary: Add product to wishlist
+      tags:
+      - User-Wishlist
 swagger: "2.0"
