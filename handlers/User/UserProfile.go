@@ -85,11 +85,6 @@ func Edit_Profile(c *gin.Context) {
 			fmt.Println("failed to edit details", err.Error)
 		} else {
 			c.JSON(200, gin.H{
-
-
-
-
-				
 				"message": "Updated Profile details",
 				"status":  200,
 			})
