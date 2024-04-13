@@ -15,26 +15,21 @@ import (
 // @Tags User-CartManagement
 // @Accept json
 // @Produce  json
-// @Param id path int true "Product ID"
-// @Success 200 {json} json	"New product added to cart"
-// @Failure 401 {json} json "failed to add to cart"
-// @Router /cart [post]
+// @Param ID path int true "Product ID"
+// @Success 200 {json} JSON	"New product added to cart"
+// @Failure 401 {json} JSON "failed to add to cart"
+// @Router /cart/{ID} [post]
 func Add_Cart(c *gin.Context) {
 	var cart models.Cart
 	var dbcart models.Cart
 
 	id := c.Param("ID")
+	fmt.Println("id-------->", id)
 	Product_Id, _ := strconv.Atoi(id)
 	cart.Product_Id = Product_Id
 	cart.User_id = int(c.GetUint("userID"))
-	initializers.DB.First(&dbcart, "product_id=? AND user_id = ?", cart.Product_Id, cart.User_id)
-	fmt.Println("dbcart=====>", dbcart)
-	if cart.Product_Id == dbcart.Product_Id {
-		c.JSON(401, gin.H{
-			"error":  "Product already added to Cart",
-			"status": 401,
-		})
-	} else {
+	fmt.Println("productidd------->", cart.Product_Id, cart.User_id)
+	if err := initializers.DB.Where("product_id = ? AND user_id = ?", cart.Product_Id, cart.User_id).First(&dbcart); err.Error != nil {
 		cart.Quantity = 1
 		if err := initializers.DB.Create(&cart); err.Error != nil {
 			c.JSON(401, gin.H{
@@ -49,6 +44,13 @@ func Add_Cart(c *gin.Context) {
 			})
 
 		}
+		fmt.Println("error---------->", err.Error)
+		fmt.Println("-------->", dbcart.Product_Id)
+	} else {
+		c.JSON(401, gin.H{
+			"error":  "Product already added to Cart",
+			"status": 401,
+		})
 	}
 }
 
@@ -94,6 +96,7 @@ func Add_Quantity_Cart(c *gin.Context) {
 				c.JSON(200, gin.H{
 					"Quantity": add.Quantity,
 					"Message":  "Added one more quantity",
+					"status": 200,
 				})
 			}
 		} else {
@@ -137,6 +140,7 @@ func Remove_Quantity_cart(c *gin.Context) {
 			c.JSON(200, gin.H{
 				"Quantity": dbremove.Quantity,
 				"Message":  "removed one more quantity",
+				"status": 200,
 			})
 		}
 	}
@@ -157,10 +161,9 @@ func View_Cart(c *gin.Context) {
 	var Grandtotal = 0
 	id := c.GetUint("userID")
 	if err := initializers.DB.Joins("Product.Offer").Where("user_id = ?", id).Find(&cart); err.Error != nil {
-		c.JSON(401,gin.H{
-			"error": "Product not found",
+		c.JSON(401, gin.H{
+			"error":  "Product not found",
 			"status": 401,
-
 		})
 		fmt.Println("product not found=====>", err.Error)
 	} else {
@@ -216,7 +219,10 @@ func Remove_Cart_Product(c *gin.Context) {
 			c.JSON(500, "Cant delete the product")
 			fmt.Println("Cant delete the product=====>", err.Error)
 		} else {
-			c.JSON(200, "Prouct removed from cart")
+			c.JSON(200, gin.H{
+				"message": "Product removed from cart",
+				"status": 200,
+			})
 		}
 	}
 }

@@ -911,42 +911,6 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
-            "post": {
-                "description": "add a new product with given name, price and quantity in the cart",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User-CartManagement"
-                ],
-                "summary": "Add\t new product to the database",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Product ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "New product added to cart",
-                        "schema": {
-                            "type": "json"
-                        }
-                    },
-                    "401": {
-                        "description": "failed to add to cart",
-                        "schema": {
-                            "type": "json"
-                        }
-                    }
-                }
             }
         },
         "/cart/addquantity/{ID}": {
@@ -1026,6 +990,42 @@ const docTemplate = `{
             }
         },
         "/cart/{ID}": {
+            "post": {
+                "description": "add a new product with given name, price and quantity in the cart",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User-CartManagement"
+                ],
+                "summary": "Add\t new product to the database",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "ID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "New product added to cart",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "failed to add to cart",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            },
             "delete": {
                 "description": "Remove a product from the user's cart based on the product ID",
                 "consumes": [
@@ -1181,7 +1181,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/products/review": {
+        "/products/review/{ID}": {
             "post": {
                 "description": "Store or update review for a product based on user input",
                 "consumes": [
@@ -1196,13 +1196,18 @@ const docTemplate = `{
                 "summary": "Store or update review for a product",
                 "parameters": [
                     {
+                        "type": "string",
                         "description": "Review data",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/handlers.productReview"
-                        }
+                        "name": "review",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Product ID",
+                        "name": "product_id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -2140,23 +2145,6 @@ const docTemplate = `{
                 },
                 "rating_value": {
                     "type": "integer"
-                }
-            }
-        },
-        "handlers.productReview": {
-            "type": "object",
-            "properties": {
-                "review": {
-                    "type": "string"
-                },
-                "review_product": {
-                    "type": "integer"
-                },
-                "review_user": {
-                    "type": "integer"
-                },
-                "time": {
-                    "type": "string"
                 }
             }
         },

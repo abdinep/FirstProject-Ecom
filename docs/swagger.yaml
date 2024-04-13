@@ -167,17 +167,6 @@ definitions:
       rating_value:
         type: integer
     type: object
-  handlers.productReview:
-    properties:
-      review:
-        type: string
-      review_product:
-        type: integer
-      review_user:
-        type: integer
-      time:
-        type: string
-    type: object
   models.OrderItem:
     type: object
 host: localhost:8080
@@ -806,30 +795,6 @@ paths:
       summary: View user's cart
       tags:
       - User-CartManagement
-    post:
-      consumes:
-      - application/json
-      description: add a new product with given name, price and quantity in the cart
-      parameters:
-      - description: Product ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: New product added to cart
-          schema:
-            type: json
-        "401":
-          description: failed to add to cart
-          schema:
-            type: json
-      summary: "Add\t new product to the database"
-      tags:
-      - User-CartManagement
   /cart/{ID}:
     delete:
       consumes:
@@ -853,6 +818,30 @@ paths:
           schema:
             type: json
       summary: Remove a product from the user's cart
+      tags:
+      - User-CartManagement
+    post:
+      consumes:
+      - application/json
+      description: add a new product with given name, price and quantity in the cart
+      parameters:
+      - description: Product ID
+        in: path
+        name: ID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: New product added to cart
+          schema:
+            type: json
+        "401":
+          description: failed to add to cart
+          schema:
+            type: json
+      summary: "Add\t new product to the database"
       tags:
       - User-CartManagement
   /cart/addquantity/{ID}:
@@ -984,18 +973,22 @@ paths:
       summary: Store or update rating for a product
       tags:
       - User-Rating
-  /products/review:
+  /products/review/{ID}:
     post:
       consumes:
       - application/json
       description: Store or update review for a product based on user input
       parameters:
       - description: Review data
-        in: body
-        name: request
+        in: formData
+        name: review
         required: true
-        schema:
-          $ref: '#/definitions/handlers.productReview'
+        type: string
+      - description: Product ID
+        in: path
+        name: product_id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
