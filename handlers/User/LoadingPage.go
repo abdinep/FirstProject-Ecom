@@ -74,6 +74,7 @@ func ProductDetails(c *gin.Context) {
 	result := handlers.OfferCalc(int(product.ID), c)
 	fmt.Println("---->", result)
 	rating := Ratingcalc(productID, c)
+	fmt.Println("rating--------->",rating)
 	stock := ""
 	if product.Quantity == 0 {
 		stock = "Out of stock"

@@ -37,10 +37,10 @@ func RatingStrore(c *gin.Context) {
 		})
 	}
 	result := initializers.DB.First(&dbrate, "product_id=?", userrate.ProductId)
-	dbrate.ProductId = userrate.ProductId
-	dbrate.Value = userrate.Value
-	dbrate.Users = 1
 	if result.Error != nil {
+		dbrate.ProductId = userrate.ProductId
+		dbrate.Value = userrate.Value
+		dbrate.Users = 1
 		if err := initializers.DB.Create(&dbrate).Error; err != nil {
 			c.JSON(401, gin.H{
 				"error":  "failed to store",
@@ -78,6 +78,7 @@ func Ratingcalc(id string, c *gin.Context) float64 {
 		// c.JSON(http.StatusBadRequest, gin.H{
 		// 	"error":"failed to fetch product data",
 		// })
+		fmt.Println("------>")
 	} else {
 		averageratio := float64(ratinguser.Value) / float64(ratinguser.Users)
 		ratinguser = models.Rating{}
