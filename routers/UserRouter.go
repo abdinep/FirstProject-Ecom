@@ -14,7 +14,7 @@ var Roleuser = "User"
 func UserGroup(r *gin.RouterGroup) {
 	//=========================== User sign up, Login & Logout =============================
 
-	r.POST("/user/registration", controllers.Usersignup)
+	r.POST("/user/registration",controllers.Usersignup)
 	r.POST("/user/signin", controllers.Userlogin)
 	r.POST("/forgotpass/sendOTP", controllers.ForgotPassword_OTP)
 	r.POST("/forgotpass/checkOTP", controllers.Forgot_Pass_OTP_Check)
@@ -70,14 +70,14 @@ func UserGroup(r *gin.RouterGroup) {
 	//============================== Oauth =====================================================
 
 	r.GET("/auth/google", controllers.Googlelogin)
-	r.GET("/auth/google/callback",controllers.GoogleCallback)
+	r.GET("/auth/google/callback", controllers.GoogleCallback)
 
 	//=============================== Payment Gateway ========================================
 	r.GET("/payment", Paymentgateways.PaymentTemplate)
 	r.POST("/payment/submit", Paymentgateways.PaymentDetailsFromFrontend)
 
 	//=============================== Payment Invoice ========================================
-	r.GET("/invoice/:ID",middleware.JwtMiddleware(Roleuser),handlers.PymentInvoice)
+	r.GET("/invoice/:ID", middleware.JwtMiddleware(Roleuser), handlers.PymentInvoice)
 
 	// ================================== END ===================================================
 }

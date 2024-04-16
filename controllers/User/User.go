@@ -106,11 +106,17 @@ func Usersignup(c *gin.Context) {
 	var Otp string
 	er := c.ShouldBindJSON(&Signup)
 	if er != nil {
-		c.JSON(501, "failed to bind json")
+		c.JSON(401, gin.H{
+			"error":  "failed to bind json",
+			"status": 401,
+		})
 	}
 	hash, err := bcrypt.GenerateFromPassword([]byte(Signup.Password), 10)
 	if err != nil {
-		c.JSON(501, "Failed to hash password")
+		c.JSON(401, gin.H{
+			"error":  "Failed to hash password",
+			"status": 401,
+		})
 	}
 	Signup.Password = string(hash)
 	Otp = GenerateOtp()
@@ -145,7 +151,7 @@ func Usersignup(c *gin.Context) {
 		"email":    Signup.Email,
 		"password": Signup.Password,
 		"phone":    Signup.Mobile,
-		"gender":Signup.Gender,
+		"gender":   Signup.Gender,
 	}
 	session := sessions.Default(c)
 	session.Set("user"+Signup.Email, userDetails)
@@ -219,7 +225,7 @@ func Otpcheck(c *gin.Context) {
 		Email:    userMap["email"].(string),
 		Password: string(HashedPassword),
 		Mobile:   phn,
-		Gender: userMap["gender"].(string),
+		Gender:   userMap["gender"].(string),
 	}
 	result := initializers.DB.Create(&signupData)
 	if result.Error != nil {
