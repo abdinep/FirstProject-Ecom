@@ -12,18 +12,20 @@ import (
 	// "github.com/dgrijalva/jwt-go"
 	// "main/jwt"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/mitchellh/mapstructure"
 	"golang.org/x/crypto/bcrypt"
 )
 
 // var Signup models.User
-var Otp string
 var Roleuser = "User"
 
 type userlogin struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
+
 // ============================== User Authentication =============================================
 
 // @Summary Login as an User
@@ -101,6 +103,7 @@ type signupdata struct {
 func Usersignup(c *gin.Context) {
 	var check models.Otp
 	var Signup signupdata
+	var Otp string
 	er := c.ShouldBindJSON(&Signup)
 	if er != nil {
 		c.JSON(501, "failed to bind json")
@@ -112,19 +115,24 @@ func Usersignup(c *gin.Context) {
 	Signup.Password = string(hash)
 	Otp = GenerateOtp()
 	check.Otp = Otp
+	fmt.Println("otp------->", Otp, Signup.Email)
 	err = SendOtp(Signup.Email, Otp)
 	if err != nil {
-		c.JSON(501, "Failed to sent otp")
+		c.JSON(401, gin.H{
+			"error":  "Failed to sent otp",
+			"status": 401,
+		})
+		return
 	}
+	fmt.Println("email-------------->", Signup.Email)
 	result := initializers.DB.First(&check, "email=?", Signup.Email)
 	if result.Error != nil {
-
 		check = models.Otp{
 			Email:     Signup.Email,
 			Otp:       Otp,
-			Expire_at: time.Now().Add(60 * time.Second),
+			Expire_at: time.Now().Add(2 * time.Minute),
 		}
-
+		fmt.Println("check--------->", check.Email, check.Otp)
 		initializers.DB.Create(&check)
 	} else {
 		initializers.DB.Model(&check).Where("email=?", Signup.Email).Updates(models.Otp{
@@ -132,8 +140,21 @@ func Usersignup(c *gin.Context) {
 			Expire_at: time.Now().Add(60 * time.Second),
 		})
 	}
-	// initializers.DB.Delete(&check)
-	c.JSON(200, "OTP sent to your mail: "+Otp)
+	userDetails := map[string]interface{}{
+		"name":     Signup.Name,
+		"email":    Signup.Email,
+		"password": Signup.Password,
+		"phone":    Signup.Mobile,
+		"gender":Signup.Gender,
+	}
+	session := sessions.Default(c)
+	session.Set("user"+Signup.Email, userDetails)
+	session.Save()
+	c.SetCookie("sessionID", "user"+Signup.Email, int((time.Hour * 5).Seconds()), "/", "localhost", false, true)
+	c.JSON(200, gin.H{
+		"message": "OTP sent to your mail: " + Otp,
+		"status":  200,
+	})
 
 }
 
@@ -152,41 +173,79 @@ type otpvalidation struct {
 // @Param request body otpvalidation true "Otp check"
 // @Success 200 {json} json " Successfully signed up"
 // @Failure 401 {json} json "Failed to Signup"
-// @Router /user/registration/otp [post]
+// @Router /user/registration/otp [post]Second
 func Otpcheck(c *gin.Context) {
-	var Signup signupdata
-	var check models.Otp
+	var signupData models.User
+	// var check models.Otp
 	var userotp otpvalidation
 	var existinigOtp models.Otp
 	var wallet models.Wallet
 	var userid models.User
 	c.ShouldBindJSON(&userotp)
-	initializers.DB.First(&check, "email=?", Signup.Email)
-	fmt.Println("=======(", check.Otp, ")=========(", userotp.Otp, ")=========", "(", Signup.Email, ")=========")
+	cookie, _ := c.Cookie("sessionID")
+	session := sessions.Default(c)
+	userData := session.Get(cookie)
+	// initializers.DB.First(&check, "email=?", Signup.Email)
+	// fmt.Println("=======(", check.Otp, ")=========(", userotp.Otp, ")=========", "(", Signup.Email, ")=========")
 	value := initializers.DB.Where("otp=? AND expire_at > ?", userotp.Otp, time.Now()).First(&existinigOtp)
 	if value.Error != nil {
-		c.JSON(501, "Incorrect OTP or OTP expired")
-	} else {
-		result := initializers.DB.Create(&Signup)
-		if result.Error != nil {
-			c.JSON(501, "User already exist")
-			return
-		} else {
-			initializers.DB.First(&userid, "email = ?", Signup.Email)
-			wallet.Created_at = time.Now()
-			wallet.UserID = userid.ID
-			if err := initializers.DB.Create(&wallet); err.Error != nil {
-				c.JSON(500, "Failed to create wallet")
-				fmt.Println("Failed to create wallet====>", err.Error)
-				return
-			}
-			c.JSON(200, "Successfully signed up")
-		}
+		c.JSON(401, gin.H{
+			"error":  "Incorrect OTP or OTP expired",
+			"status": 401,
+		})
+		return
 	}
-	Signup = signupdata{}
+	userMap := make(map[string]interface{})
+	err := mapstructure.Decode(userData, &userMap)
+	if err != nil {
+		c.JSON(401, gin.H{
+			"error":  "Failed to insert user data to map",
+			"status": 401,
+		})
+		return
+	}
+
+	phn := fmt.Sprintf("%v", userMap["phone"])
+	HashedPassword, err := bcrypt.GenerateFromPassword([]byte(userMap["password"].(string)), bcrypt.DefaultCost)
+	if err != nil {
+		c.JSON(401, gin.H{
+			"error":  "hashing error",
+			"status": 401,
+		})
+		return
+	}
+	signupData = models.User{
+		Name:     userMap["name"].(string),
+		Email:    userMap["email"].(string),
+		Password: string(HashedPassword),
+		Mobile:   phn,
+		Gender: userMap["gender"].(string),
+	}
+	result := initializers.DB.Create(&signupData)
+	if result.Error != nil {
+		c.JSON(401, gin.H{
+			"error":  "User already exist",
+			"status": 401,
+		})
+		return
+	} else {
+		initializers.DB.First(&userid, "email = ?", signupData.Email)
+		wallet.Created_at = time.Now()
+		wallet.UserID = userid.ID
+		if err := initializers.DB.Create(&wallet); err.Error != nil {
+			c.JSON(500, "Failed to create wallet")
+			fmt.Println("Failed to create wallet====>", err.Error)
+			return
+		}
+
+		session.Delete(cookie)
+		session.Save()
+		c.SetCookie("sessionID", "", -1, "", "", false, false)
+		c.JSON(200, "Successfully signed up")
+	}
 }
 
-// @Summary Resend OTP 
+// @Summary Resend OTP
 // @Description  This API is used for resending the OTP
 // @Tags User-Auth
 // @Accept json
@@ -195,21 +254,36 @@ func Otpcheck(c *gin.Context) {
 // @Failure 401 {json} json "Failed to send OTP"
 // @Router /user/registration/resendotp [post]
 func Resend_Otp(c *gin.Context) {
-	var Signup signupdata
+	// var Signup signupdata
+	var Otp string
 	var check models.Otp
+	cookie, _ := c.Cookie("sessionID")
+	session := sessions.Default(c)
+	userData := session.Get(cookie)
+
+	userMap := make(map[string]interface{})
+	err := mapstructure.Decode(userData, &userMap)
+	if err != nil {
+		c.JSON(401, gin.H{
+			"error":  "Failed to insert user data to map",
+			"status": 401,
+		})
+		return
+	}
+	// email := userMap["email"].(string)
 	Otp = GenerateOtp()
-	err := SendOtp(Signup.Email, Otp)
+	err = SendOtp(userMap["email"].(string), Otp)
 	if err != nil {
 		c.JSON(501, "Failed to sent otp")
 	} else {
 
-		result := initializers.DB.First(&check, "email=?", Signup.Email)
+		result := initializers.DB.First(&check, "email=?", userMap["email"].(string))
 		if result.Error != nil {
 
 			check = models.Otp{
-				Email:     Signup.Email,
+				Email:     userMap["email"].(string),
 				Otp:       Otp,
-				Expire_at: time.Now().Add(15 * time.Second),
+				Expire_at: time.Now().Add(2 * time.Minute),
 			}
 
 			result := initializers.DB.Create(&check)
@@ -217,7 +291,7 @@ func Resend_Otp(c *gin.Context) {
 				c.JSON(http.StatusBadRequest, "Failed to save OTP")
 			}
 		} else {
-			err := initializers.DB.Model(&check).Where("email=?", Signup.Email).Updates(models.Otp{
+			err := initializers.DB.Model(&check).Where("email=?", userMap["email"].(string)).Updates(models.Otp{
 				Otp:       Otp,
 				Expire_at: time.Now().Add(15 * time.Second),
 			})
