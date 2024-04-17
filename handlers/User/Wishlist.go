@@ -69,7 +69,6 @@ func ViewWishlist(c *gin.Context) {
 				"product_id":    v.ProductID,
 				"product_name":  v.Product.Product_Name,
 				"product_price": v.Product.Price,
-				"product_image": v.Product.ImagePath1,
 			})
 		}
 		c.JSON(200, gin.H{

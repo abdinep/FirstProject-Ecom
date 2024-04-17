@@ -4,9 +4,11 @@ import (
 	"ecom/initializers"
 	"ecom/models"
 	"fmt"
-	"net/http"
+	"path/filepath"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/lib/pq"
 )
 
 var product ProductHandler
@@ -23,73 +25,81 @@ type ProductHandler struct {
 	ImagePath3   string
 }
 
-// @Summary Add Product
-// @Description Collecting the Product Details
+// @Summary Add a new product
+// @Description Add a new product with images and other details
 // @Tags Admin-ProductManagement
-// @Accept json
-// @Produce json
-// @Param product body ProductHandler true "Collecting Product Details"
-// @Success 200 {json} json	"Upload Product Images"
-// @Failure 401 {json} json "Failed to collect  data, please check your inputs again."
-// @Router /admin/products [get]
+// @Accept multipart/form-data
+// @Param prodName formData string true "Product name"
+// @Param price formData integer true "Product price"
+// @Param size formData string true "Product size"
+// @Param quantity formData integer true "Product quantity"
+// @Param description formData string true "Product description"
+// @Param category formData  int true "Category ID of the product"
+// @Param images formData []file true "Product images"
+// @Success 200 {json} SuccessResponse
+// @Failure 400 {json} ErrorResponse
+// @Router /products [post]
 func Add_Product(c *gin.Context) {
 	var cat_id models.Category
-	err := c.ShouldBindJSON(&product)
-	if err != nil {
-		c.JSON(501, "failed to bind json")
-	}
+
+	description := c.PostForm("description")
+	price, _ := strconv.Atoi(c.PostForm("price"))
+	prodName := c.PostForm("productName")
+	quantity, _ := strconv.Atoi(c.PostForm("quantity"))
+	size, _ := strconv.Atoi(c.PostForm("size"))
 	fmt.Println("============", product, "==================")
-	result := initializers.DB.First(&cat_id, product.Category_id)
+	result := initializers.DB.First(&cat_id, c.PostForm("category"))
 	fmt.Println("============", cat_id, "=====================")
 	if result.Error != nil {
-		c.JSON(404, "Category not found")
-	} else {
-
-		c.JSON(200, "Upload Product Images ")
+		c.JSON(401, gin.H{
+			"error":  "Category not found",
+			"status": 401,
+		})
+		return
 	}
+	files := c.Request.MultipartForm.File["images"]
+	if len(files) < 3 {
+		c.JSON(401, gin.H{
+			"error":  "atleast 3 images required",
+			"status": 401,
+		})
+		return
+	}
+	var images []string
+	for _, image := range files {
+		path := filepath.Join("./assets", image.Filename)
+		if err := c.SaveUploadedFile(image, path); err != nil {
+			c.JSON(401, gin.H{
+				"error":  "Failed to upload images",
+				"status": 401,
+			})
+			return
+		}
+		images = append(images, path)
+	}
+	datas := models.Product{
+		Product_Name: prodName,
+		Price:        price,
+		Description:  description,
+		Category_id:  cat_id.ID,
+		ImagePath:    pq.StringArray(images),
+		Quantity:     quantity,
+		Size:         size,
+	}
+	if err := initializers.DB.Create(&datas); err.Error != nil {
+		c.JSON(401, gin.H{
+			"error":  "failed to upload product",
+			"status": 401,
+		})
+		return
+	}
+	c.JSON(200, gin.H{
+		"message": "Product added successfully",
+		"status":  200,
+	})
 }
 
 // ==================================== END =========================================
-// ================================= Upload Product Image ===========================
-// @Summary Add Product Images
-// @Description Collecting all Images of the Product
-// @Tags Admin-ProductManagement
-// @Accept mulipart/form-data
-// @Produce json
-// @Param images formData file true "Product images to upload"
-// @Success 200 {json} json	"Product added successfully"
-// @Failure 401 {json} json "Product already exist"
-// @Router /admin/products [post]
-func ProductImage(c *gin.Context) {
-	file, err := c.MultipartForm()
-	if err != nil {
-		c.JSON(http.StatusBadRequest, "Failed to fetch images")
-	}
-	files := file.File["images"]
-	var imagepaths []string
-
-	for _, val := range files {
-		filepath := "./images/" + val.Filename
-		if err = c.SaveUploadedFile(val, filepath); err != nil {
-			c.JSON(http.StatusBadRequest, "Failed to save images")
-			return
-		}
-		imagepaths = append(imagepaths, filepath)
-	}
-	product.ImagePath1 = imagepaths[0]
-	product.ImagePath2 = imagepaths[1]
-	product.ImagePath3 = imagepaths[2]
-	upload := initializers.DB.Create(&product)
-	if upload.Error != nil {
-		c.JSON(501, "Product already exist")
-		return
-	} else {
-		c.JSON(200, "Product added successfully")
-	}
-	product = ProductHandler{}
-
-}
-
 // ====================== Showing all products in admin page ==========================
 
 // @Summary List Products
@@ -138,20 +148,32 @@ func Edit_Product(c *gin.Context) {
 	result := initializers.DB.First(&edit, product)
 	fmt.Println("(===============", edit, "===========)(", product, "===================)")
 	if result.Error != nil {
-		c.JSON(501, "Product not found")
+		c.JSON(401, gin.H{
+			"error":  "Product not found",
+			"status": 401,
+		})
 		return
 	} else {
 		err := c.ShouldBindJSON(&edit)
 		if err != nil {
-			c.JSON(501, "failed to bind json")
+			c.JSON(401, gin.H{
+				"error":  "failed to bind json",
+				"status": 401,
+			})
 			return
 		}
 		save := initializers.DB.Save(&edit)
 		if save.Error != nil {
-			c.JSON(501, "Failed to update Product")
+			c.JSON(401, gin.H{
+				"error":  "Failed to update Product",
+				"status": 401,
+			})
 			return
 		} else {
-			c.JSON(200, "Product updated successfully")
+			c.JSON(200, gin.H{
+				"message": "Product updated successfully",
+				"status":  200,
+			})
 		}
 	}
 }
@@ -172,8 +194,7 @@ func Edit_Product(c *gin.Context) {
 func Delete_Product(c *gin.Context) {
 	var delete models.Product
 	product := c.Param("ID")
-	if err := initializers.DB.First(&delete, product);
-	err.Error != nil {
+	if err := initializers.DB.First(&delete, product); err.Error != nil {
 		c.JSON(401, gin.H{
 			"error":  "Product cant be deleted",
 			"status": 401,

@@ -33,7 +33,6 @@ func ProductLoadingPage(c *gin.Context) {
 			"product_name":     v.Product_Name,
 			"product_price":    v.Price,
 			"product_category": v.Category.Name,
-			"product_image":    v.ImagePath1,
 			"product_id":       v.ID,
 		})
 	}
@@ -102,7 +101,6 @@ func ProductDetails(c *gin.Context) {
 			"message":             "similar products",
 			"category_id":         value.Category_id,
 			"product Name":        value.Product_Name,
-			"product image":       value.ImagePath1,
 			"product Price":       value.Price,
 			"product size":        value.Size,
 			"product discription": value.Description,
@@ -117,8 +115,6 @@ func ProductDetails(c *gin.Context) {
 		"product_quantity":    product.Quantity,
 		"product_price":       product.Price,
 		"product_description": product.Description,
-		"product_image2":      product.ImagePath2,
-		"product_image3":      product.ImagePath3,
 		"product_size":        product.Size,
 		"product_category":    product.Category.Name,
 		"rating":            rating,

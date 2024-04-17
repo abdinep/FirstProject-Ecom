@@ -681,82 +681,6 @@
                 }
             }
         },
-        "/admin/products": {
-            "get": {
-                "description": "Collecting the Product Details",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Admin-ProductManagement"
-                ],
-                "summary": "Add Product",
-                "parameters": [
-                    {
-                        "description": "Collecting Product Details",
-                        "name": "product",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/handlers.ProductHandler"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Upload Product Images",
-                        "schema": {
-                            "type": "json"
-                        }
-                    },
-                    "401": {
-                        "description": "Failed to collect  data, please check your inputs again.",
-                        "schema": {
-                            "type": "json"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "Collecting all Images of the Product",
-                "consumes": [
-                    "mulipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Admin-ProductManagement"
-                ],
-                "summary": "Add Product Images",
-                "parameters": [
-                    {
-                        "type": "file",
-                        "description": "Product images to upload",
-                        "name": "images",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Product added successfully",
-                        "schema": {
-                            "type": "json"
-                        }
-                    },
-                    "401": {
-                        "description": "Product already exist",
-                        "schema": {
-                            "type": "json"
-                        }
-                    }
-                }
-            }
-        },
         "/admin/products/{ID}": {
             "delete": {
                 "description": "Deleting  a specific product from the database",
@@ -1177,6 +1101,87 @@
                     },
                     "500": {
                         "description": "Failed to fetch invoice data or generate PDF file",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
+        "/products": {
+            "post": {
+                "description": "Add a new product with images and other details",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "Admin-ProductManagement"
+                ],
+                "summary": "Add a new product",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Product name",
+                        "name": "prodName",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Product price",
+                        "name": "price",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Product size",
+                        "name": "size",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Product quantity",
+                        "name": "quantity",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Product description",
+                        "name": "description",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Category ID of the product",
+                        "name": "category",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "file"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "Product images",
+                        "name": "images",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
                         "schema": {
                             "type": "json"
                         }
@@ -1982,38 +1987,6 @@
                 },
                 "password": {
                     "type": "string"
-                }
-            }
-        },
-        "handlers.ProductHandler": {
-            "type": "object",
-            "properties": {
-                "category": {
-                    "type": "integer"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "imagePath1": {
-                    "type": "string"
-                },
-                "imagePath2": {
-                    "type": "string"
-                },
-                "imagePath3": {
-                    "type": "string"
-                },
-                "price": {
-                    "type": "integer"
-                },
-                "prodName": {
-                    "type": "string"
-                },
-                "quantity": {
-                    "type": "integer"
-                },
-                "size": {
-                    "type": "integer"
                 }
             }
         },

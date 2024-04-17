@@ -32,27 +32,6 @@ definitions:
       password:
         type: string
     type: object
-  handlers.ProductHandler:
-    properties:
-      category:
-        type: integer
-      description:
-        type: string
-      imagePath1:
-        type: string
-      imagePath2:
-        type: string
-      imagePath3:
-        type: string
-      price:
-        type: integer
-      prodName:
-        type: string
-      quantity:
-        type: integer
-      size:
-        type: integer
-    type: object
   handlers.UpdateProduct:
     properties:
       category:
@@ -661,56 +640,6 @@ paths:
       summary: List Products
       tags:
       - Admin-ProductManagement
-  /admin/products:
-    get:
-      consumes:
-      - application/json
-      description: Collecting the Product Details
-      parameters:
-      - description: Collecting Product Details
-        in: body
-        name: product
-        required: true
-        schema:
-          $ref: '#/definitions/handlers.ProductHandler'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Upload Product Images
-          schema:
-            type: json
-        "401":
-          description: Failed to collect  data, please check your inputs again.
-          schema:
-            type: json
-      summary: Add Product
-      tags:
-      - Admin-ProductManagement
-    post:
-      consumes:
-      - mulipart/form-data
-      description: Collecting all Images of the Product
-      parameters:
-      - description: Product images to upload
-        in: formData
-        name: images
-        required: true
-        type: file
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Product added successfully
-          schema:
-            type: json
-        "401":
-          description: Product already exist
-          schema:
-            type: json
-      summary: Add Product Images
-      tags:
-      - Admin-ProductManagement
   /admin/products/{ID}:
     delete:
       consumes:
@@ -995,6 +924,62 @@ paths:
       summary: Generate payment invoice for a specific order
       tags:
       - User-Invoice
+  /products:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add a new product with images and other details
+      parameters:
+      - description: Product name
+        in: formData
+        name: prodName
+        required: true
+        type: string
+      - description: Product price
+        in: formData
+        name: price
+        required: true
+        type: integer
+      - description: Product size
+        in: formData
+        name: size
+        required: true
+        type: string
+      - description: Product quantity
+        in: formData
+        name: quantity
+        required: true
+        type: integer
+      - description: Product description
+        in: formData
+        name: description
+        required: true
+        type: string
+      - description: Category ID of the product
+        in: formData
+        name: category
+        required: true
+        type: integer
+      - collectionFormat: csv
+        description: Product images
+        in: formData
+        items:
+          type: file
+        name: images
+        required: true
+        type: array
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: json
+        "400":
+          description: Bad Request
+          schema:
+            type: json
+      summary: Add a new product
+      tags:
+      - Admin-ProductManagement
   /products/rating:
     post:
       consumes:
