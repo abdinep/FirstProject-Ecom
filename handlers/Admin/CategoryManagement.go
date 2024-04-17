@@ -22,7 +22,6 @@ type  addCategoryForm struct {
 // @Success 200 {json} json	"Added Category"
 // @Failure 401 {json} json "Failed to add Category"
 // @Router /admin/category/addcategory [post]
-
 func Category(c *gin.Context) {
 	var cat addCategoryForm
 	c.ShouldBindJSON(&cat)
