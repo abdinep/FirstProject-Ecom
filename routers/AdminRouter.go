@@ -28,7 +28,7 @@ func AdminGroup(r *gin.RouterGroup) {
 
 	//=========================== Admin Product management ===================================
 
-	r.GET("/products", middleware.JwtMiddleware(roleAdmin), handlers.Add_Product)
+	r.POST("/products", middleware.JwtMiddleware(roleAdmin), handlers.Add_Product)
 	r.GET("/productlist", middleware.JwtMiddleware(roleAdmin), handlers.View_Product)
 	r.PATCH("/products/:ID", middleware.JwtMiddleware(roleAdmin), handlers.Edit_Product)
 	r.DELETE("/products/:ID", middleware.JwtMiddleware(roleAdmin), handlers.Delete_Product)
