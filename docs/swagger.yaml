@@ -640,6 +640,62 @@ paths:
       summary: List Products
       tags:
       - Admin-ProductManagement
+  /admin/products:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Add a new product with images and other details
+      parameters:
+      - description: Product name
+        in: formData
+        name: prodName
+        required: true
+        type: string
+      - description: Product price
+        in: formData
+        name: price
+        required: true
+        type: integer
+      - description: Product size
+        in: formData
+        name: size
+        required: true
+        type: string
+      - description: Product quantity
+        in: formData
+        name: quantity
+        required: true
+        type: integer
+      - description: Product description
+        in: formData
+        name: description
+        required: true
+        type: string
+      - description: Category ID of the product
+        in: formData
+        name: category
+        required: true
+        type: integer
+      - collectionFormat: csv
+        description: Product images
+        in: formData
+        items:
+          type: file
+        name: images
+        required: true
+        type: array
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: json
+        "400":
+          description: Bad Request
+          schema:
+            type: json
+      summary: Add a new product
+      tags:
+      - Admin-ProductManagement
   /admin/products/{ID}:
     delete:
       consumes:
@@ -924,62 +980,6 @@ paths:
       summary: Generate payment invoice for a specific order
       tags:
       - User-Invoice
-  /products:
-    post:
-      consumes:
-      - multipart/form-data
-      description: Add a new product with images and other details
-      parameters:
-      - description: Product name
-        in: formData
-        name: prodName
-        required: true
-        type: string
-      - description: Product price
-        in: formData
-        name: price
-        required: true
-        type: integer
-      - description: Product size
-        in: formData
-        name: size
-        required: true
-        type: string
-      - description: Product quantity
-        in: formData
-        name: quantity
-        required: true
-        type: integer
-      - description: Product description
-        in: formData
-        name: description
-        required: true
-        type: string
-      - description: Category ID of the product
-        in: formData
-        name: category
-        required: true
-        type: integer
-      - collectionFormat: csv
-        description: Product images
-        in: formData
-        items:
-          type: file
-        name: images
-        required: true
-        type: array
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: json
-        "400":
-          description: Bad Request
-          schema:
-            type: json
-      summary: Add a new product
-      tags:
-      - Admin-ProductManagement
   /products/rating:
     post:
       consumes:
