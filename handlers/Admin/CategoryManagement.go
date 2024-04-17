@@ -70,6 +70,7 @@ type editCategory struct{
 // @Accept json
 // @Produce  json
 // @Param  ID path string true "Category ID"
+// @Param category body editCategory true "Category Data"
 // @Success 200 {json} json	"Edited Category"
 // @Failure 401 {json} json "Category not Found or Failed to Edit Category"
 // @Router /admin/category/edit/{ID} [patch]
