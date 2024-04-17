@@ -704,7 +704,7 @@ paths:
       parameters:
       - description: Prouct ID
         in: path
-        name: id
+        name: ID
         required: true
         type: integer
       produces:
