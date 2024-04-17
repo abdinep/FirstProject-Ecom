@@ -156,8 +156,7 @@ func Checkout(c *gin.Context) {
 				"message":   "Continue to Payment",
 				"paymentID": OrderPaymentID,
 				"status":    200,
-			})
-			return
+			})	
 		}
 		fmt.Println("orderpayment:==>", OrderPaymentID)
 		fmt.Println("receipt====>", orderId)
@@ -186,6 +185,7 @@ func Checkout(c *gin.Context) {
 		OrderDate:      time.Now(),
 		UserID:         int(userid),
 	}
+	fmt.Println("orderdata--------->",orderdata)
 	if err := tx.Create(&orderdata); err.Error != nil {
 		tx.Rollback()
 		c.JSON(401, gin.H{
