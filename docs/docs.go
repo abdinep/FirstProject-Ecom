@@ -169,6 +169,46 @@ const docTemplate = `{
                 }
             }
         },
+        "/admin/category/addcategory": {
+            "post": {
+                "description": "Admin  can add a new category",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-CategoryManagement"
+                ],
+                "summary": "Add Category",
+                "parameters": [
+                    {
+                        "description": "New Category Info",
+                        "name": "category",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.addCategoryForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Added Category",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Failed to add Category",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/category/delete/{ID}": {
             "delete": {
                 "description": "Admin  can Delete category by selecting the category",
@@ -208,7 +248,7 @@ const docTemplate = `{
             }
         },
         "/admin/category/edit/{ID}": {
-            "post": {
+            "patch": {
                 "description": "Admin  can Edit category",
                 "consumes": [
                     "application/json"
@@ -227,6 +267,15 @@ const docTemplate = `{
                         "name": "ID",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "Category Data",
+                        "name": "category",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.editCategory"
+                        }
                     }
                 ],
                 "responses": {
@@ -2006,6 +2055,17 @@ const docTemplate = `{
                 }
             }
         },
+        "handlers.addCategoryForm": {
+            "type": "object",
+            "properties": {
+                "catDescription": {
+                    "type": "string"
+                },
+                "categoryName": {
+                    "type": "string"
+                }
+            }
+        },
         "handlers.addcoupon": {
             "type": "object",
             "properties": {
@@ -2133,6 +2193,20 @@ const docTemplate = `{
                 },
                 "userID": {
                     "type": "integer"
+                }
+            }
+        },
+        "handlers.editCategory": {
+            "type": "object",
+            "properties": {
+                "catDescription": {
+                    "type": "string"
+                },
+                "catStatus": {
+                    "type": "string"
+                },
+                "categoryName": {
+                    "type": "string"
                 }
             }
         },

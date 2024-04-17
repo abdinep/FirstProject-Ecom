@@ -74,6 +74,13 @@ definitions:
       size:
         type: integer
     type: object
+  handlers.addCategoryForm:
+    properties:
+      catDescription:
+        type: string
+      categoryName:
+        type: string
+    type: object
   handlers.addcoupon:
     properties:
       code:
@@ -158,6 +165,15 @@ definitions:
         type: string
       userID:
         type: integer
+    type: object
+  handlers.editCategory:
+    properties:
+      catDescription:
+        type: string
+      catStatus:
+        type: string
+      categoryName:
+        type: string
     type: object
   handlers.productRating:
     properties:
@@ -303,6 +319,32 @@ paths:
       summary: List Category
       tags:
       - Admin-CategoryManagement
+  /admin/category/addcategory:
+    post:
+      consumes:
+      - application/json
+      description: Admin  can add a new category
+      parameters:
+      - description: New Category Info
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.addCategoryForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Added Category
+          schema:
+            type: json
+        "401":
+          description: Failed to add Category
+          schema:
+            type: json
+      summary: Add Category
+      tags:
+      - Admin-CategoryManagement
   /admin/category/delete/{ID}:
     delete:
       consumes:
@@ -329,7 +371,7 @@ paths:
       tags:
       - Admin-CategoryManagement
   /admin/category/edit/{ID}:
-    post:
+    patch:
       consumes:
       - application/json
       description: Admin  can Edit category
@@ -339,6 +381,12 @@ paths:
         name: ID
         required: true
         type: string
+      - description: Category Data
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.editCategory'
       produces:
       - application/json
       responses:
