@@ -14,7 +14,6 @@ import (
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/mitchellh/mapstructure"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -56,7 +55,7 @@ func Userlogin(c *gin.Context) {
 			fmt.Println("id======>", table.ID)
 			token = middleware.GenerateJwt(c, form.Email, Roleuser, table.ID)
 			fmt.Println("token----->", token)
-			c.SetCookie("jwtTokenUser", token, int((time.Hour * 5).Seconds()), "/", "localhost", false, true)
+			c.SetCookie("jwtTokenUser", token, int((time.Hour * 5).Seconds()), "/", "abdin.online", false, false)
 			c.JSON(200, gin.H{
 				"Message": "Welcome to Home page",
 				"Token":   token,
@@ -157,7 +156,7 @@ func Usersignup(c *gin.Context) {
 	session := sessions.Default(c)
 	session.Set("user"+Signup.Email, userDetails)
 	session.Save()
-	c.SetCookie("sessionID", "user"+Signup.Email, int((time.Hour * 5).Seconds()), "/", "localhost", false, true)
+	c.SetCookie("sessionID", "user"+Signup.Email, int((time.Hour * 5).Seconds()), "/", "abdin.online", false, false)
 	c.JSON(200, gin.H{
 		"message": "OTP sent to your mail: " + Otp,
 		"status":  200,
@@ -212,6 +211,7 @@ func Otpcheck(c *gin.Context) {
 		Mobile:   phn,
 		Gender:   userMap["gender"].(string),
 	}
+	fmt.Println("======>signupdata", signupData, "<========end")
 	result := initializers.DB.Create(&signupData)
 	if result.Error != nil {
 		c.JSON(401, gin.H{
@@ -251,21 +251,29 @@ func Resend_Otp(c *gin.Context) {
 	cookie, _ := c.Cookie("sessionID")
 	session := sessions.Default(c)
 	userData := session.Get(cookie)
-
-	userMap := make(map[string]interface{})
-	err := mapstructure.Decode(userData, &userMap)
-	if err != nil {
+	if userData == nil {
 		c.JSON(401, gin.H{
-			"error":  "Failed to insert user data to map",
+			"error":  "User data not found in session",
+			"status": 401,
+		})
+		return
+	}
+	userMap, ok := userData.(map[string]interface{})
+	if !ok {
+		c.JSON(401, gin.H{
+			"error":  "Failed to convert user data to map",
 			"status": 401,
 		})
 		return
 	}
 	// email := userMap["email"].(string)
 	Otp = GenerateOtp()
-	err = SendOtp(userMap["email"].(string), Otp)
+	err := SendOtp(userMap["email"].(string), Otp)
 	if err != nil {
-		c.JSON(501, "Failed to sent otp")
+		c.JSON(401, gin.H{
+			"error":  "Failed to sent otp",
+			"status": 401,
+		})
 	} else {
 
 		result := initializers.DB.First(&check, "email=?", userMap["email"].(string))
