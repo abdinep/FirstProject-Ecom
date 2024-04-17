@@ -65,14 +65,14 @@ func Checkout(c *gin.Context) {
 		if int(view.Quantity) > view.Product.Quantity {
 			pname = view.Product.Product_Name
 			fmt.Println("pname------->", pname)
+			c.JSON(200, gin.H{
+				"message": "Product Out of Stock" + pname,
+				"status":  200,
+			})
 			return
 		}
 		Grandtotal += quantity_price
 	}
-	c.JSON(200, gin.H{
-		"message": "Product Out of Stock" + pname,
-		"status":  200,
-	})
 
 	//========================= Cheking Coupon =========================================
 	var coup string
@@ -157,6 +157,7 @@ func Checkout(c *gin.Context) {
 				"paymentID": OrderPaymentID,
 				"status":    200,
 			})
+			return
 		}
 		fmt.Println("orderpayment:==>", OrderPaymentID)
 		fmt.Println("receipt====>", orderId)

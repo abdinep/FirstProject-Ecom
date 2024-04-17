@@ -30,15 +30,22 @@ func Coupon(c *gin.Context) {
 	var coupon addcoupon
 	if err := c.ShouldBindJSON(&coupon); err != nil {
 		c.JSON(500, "Failed to fetch data")
+		return
+	}
+	if err := initializers.DB.Create(&models.Coupon{
+		Code:       coupon.Code,
+		Discount:   coupon.Discount,
+		Coundition: coupon.Coundition,
+		ValidFrom:  coupon.ValidFrom,
+		ValidTo:    coupon.ValidTo,
+	}); err.Error != nil {
+		c.JSON(500, "Coupon already exist")
+		fmt.Println("Coupon already exist", err.Error)
 	} else {
-		if err := initializers.DB.Create(&coupon); err.Error != nil {
-			c.JSON(500, "Coupon already exist")
-			fmt.Println("Coupon already exist", err.Error)
-		} else {
-			c.JSON(200, "New Coupon added")
-		}
+		c.JSON(200, "New Coupon added")
 	}
 }
+
 // @Summary List Coupon
 // @Description Admin  can View all the coupons
 // @Tags Admin-CouponManagement
@@ -59,6 +66,7 @@ func ListCoupon(c *gin.Context) {
 		"data": coupon,
 	})
 }
+
 // @Summary Delete Coupon
 // @Description Admin  can Delete coupons with selected Coupon ID
 // @Tags Admin-CouponManagement
