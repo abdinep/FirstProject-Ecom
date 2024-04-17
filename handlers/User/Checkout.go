@@ -184,6 +184,7 @@ func Checkout(c *gin.Context) {
 		DeliveryCharge: DeliveryCharge,
 		OrderDate:      time.Now(),
 		UserID:         int(userid),
+		ID:uint(orderId) ,
 	}
 	fmt.Println("orderdata--------->",orderdata)
 	if err := tx.Create(&orderdata); err.Error != nil {
