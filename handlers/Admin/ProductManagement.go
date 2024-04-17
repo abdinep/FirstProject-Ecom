@@ -38,7 +38,7 @@ type ProductHandler struct {
 // @Param images formData []file true "Product images"
 // @Success 200 {json} SuccessResponse
 // @Failure 400 {json} ErrorResponse
-// @Router /products [post]
+// @Router /admin/products [post]
 func Add_Product(c *gin.Context) {
 	var cat_id models.Category
 
