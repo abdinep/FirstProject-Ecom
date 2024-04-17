@@ -114,7 +114,7 @@ func View_Product(c *gin.Context) {
 	var View []models.Product
 	var listproduct []gin.H
 	//  var checkcategory models.Categories
-	initializers.DB.Where("deleted_at IS NULL").Preload("Category").Find(&View)
+	initializers.DB.Find(&View)
 	for _, v := range View {
 		listproduct = append(listproduct, gin.H{
 			"Product_Name": v.Product_Name,
