@@ -83,10 +83,6 @@ definitions:
         type: string
       user_country:
         type: string
-      user_id:
-        type: integer
-      user_phone:
-        type: integer
       user_pincode:
         type: integer
       user_state:
@@ -102,10 +98,6 @@ definitions:
         type: string
       user_country:
         type: string
-      user_id:
-        type: integer
-      user_phone:
-        type: integer
       user_pincode:
         type: integer
       user_state:
@@ -1107,7 +1099,7 @@ paths:
       parameters:
       - description: User ID
         in: path
-        name: user_id
+        name: ID
         required: true
         type: integer
       - description: Address details

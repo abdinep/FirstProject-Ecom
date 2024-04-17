@@ -16,9 +16,7 @@ type  addressAddHandler struct {
     State   string `json:"user_state"`
     Pincode int    `json:"user_pincode"`
     Country string `json:"user_country"`
-    Phone   int    `json:"user_phone"`
     Type    string `json:"address_type"`
-    UserId  int    `json:"user_id"`
 }
 // @Summary Add Address
 // @Description User  can add a new address to their account
@@ -37,8 +35,16 @@ func Add_Address(c *gin.Context) {
 			"status":401,
 		})
 	}
-	address.UserId = int(c.GetUint("userID"))
-	if err := initializers.DB.Create(&address); err.Error != nil {
+	UserId := int(c.GetUint("userID"))
+	if err := initializers.DB.Create(&models.Address{
+		Address: address.Address,
+		City: address.City,
+		State: address.State,
+		Pincode: address.Pincode,
+		Country: address.Country,
+		Type: address.Type,
+		UserId: UserId,
+	}); err.Error != nil {
 		c.JSON(401,gin.H{
 			"error":"Existing Address",
 			"status":401,
@@ -56,16 +62,14 @@ type  addressUpdateHandler struct {
     State   string `json:"user_state"`
     Pincode int    `json:"user_pincode"`
     Country string `json:"user_country"`
-    Phone   int    `json:"user_phone"`
     Type    string `json:"address_type"`
-    UserId  int    `json:"user_id"`
 }
 // @Summary Edit Address
 // @Description User  can edit their address
 // @Tags User-AddressManagement
 // @Accept json
 // @Produce  json
-// @Param user_id path int true "User ID"
+// @Param ID path int true "User ID"
 // @Param address body addressUpdateHandler true "Address details"
 // @Success 200 {json} json	"Updated Address"
 // @Failure 401 {json} json "failed to edit address"

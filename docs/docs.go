@@ -1400,7 +1400,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "User ID",
-                        "name": "user_id",
+                        "name": "ID",
                         "in": "path",
                         "required": true
                     },
@@ -2074,12 +2074,6 @@ const docTemplate = `{
                 "user_country": {
                     "type": "string"
                 },
-                "user_id": {
-                    "type": "integer"
-                },
-                "user_phone": {
-                    "type": "integer"
-                },
                 "user_pincode": {
                     "type": "integer"
                 },
@@ -2102,12 +2096,6 @@ const docTemplate = `{
                 },
                 "user_country": {
                     "type": "string"
-                },
-                "user_id": {
-                    "type": "integer"
-                },
-                "user_phone": {
-                    "type": "integer"
                 },
                 "user_pincode": {
                     "type": "integer"
