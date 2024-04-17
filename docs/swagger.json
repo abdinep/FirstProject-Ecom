@@ -2119,9 +2119,6 @@
                 },
                 "OfferName": {
                     "type": "string"
-                },
-                "productId": {
-                    "type": "integer"
                 }
             }
         },

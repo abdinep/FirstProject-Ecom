@@ -117,8 +117,6 @@ definitions:
         type: number
       OfferName:
         type: string
-      productId:
-        type: integer
     type: object
   handlers.checkoutdetails:
     properties:

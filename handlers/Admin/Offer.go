@@ -13,7 +13,6 @@ import (
 type addsoffer struct {
 	OfferName string    `json:"OfferName"`
 	Amount    float64   `json:"Amount"`
-	ProductId int
 }
 
 // @Summary Add an offer for a product
@@ -35,7 +34,6 @@ func AddOffer(c *gin.Context) {
 		c.JSON(500, gin.H{"Error": "Product not available"})
 		fmt.Println("Product not available======>", err.Error)
 	} else {
-		offer.ProductId, _ = strconv.Atoi(productid)
 		podid, _ := strconv.Atoi(productid)
 		if err := initializers.DB.Create(&models.Offer{
 			ProductId: podid,

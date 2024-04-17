@@ -2125,9 +2125,6 @@ const docTemplate = `{
                 },
                 "OfferName": {
                     "type": "string"
-                },
-                "productId": {
-                    "type": "integer"
                 }
             }
         },
