@@ -648,7 +648,7 @@ paths:
       parameters:
       - description: Product name
         in: formData
-        name: prodName
+        name: productName
         required: true
         type: string
       - description: Product price

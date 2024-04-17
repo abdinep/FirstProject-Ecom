@@ -701,7 +701,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Product name",
-                        "name": "prodName",
+                        "name": "productName",
                         "in": "formData",
                         "required": true
                     },

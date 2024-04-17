@@ -29,7 +29,7 @@ type ProductHandler struct {
 // @Description Add a new product with images and other details
 // @Tags Admin-ProductManagement
 // @Accept multipart/form-data
-// @Param prodName formData string true "Product name"
+// @Param productName formData string true "Product name"
 // @Param price formData integer true "Product price"
 // @Param size formData string true "Product size"
 // @Param quantity formData integer true "Product quantity"
