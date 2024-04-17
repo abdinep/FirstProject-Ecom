@@ -43,7 +43,7 @@ func Login(c *gin.Context) {
 		adminID := admin.ID
 		fmt.Println("==========>", admin.Email, admin.Password, adminID, "<=============")
 		token := middleware.GenerateJwt(c, log.Email, Adminrole, adminID)
-		c.SetCookie("jwtTokenAdmin", token, int((time.Hour * 1).Seconds()), "/", "localhost", false, true)
+		c.SetCookie("jwtTokenAdmin", token, int((time.Hour * 1).Seconds()), "/", "abdin.online", false, false)
 		c.JSON(http.StatusOK, gin.H{
 			"message": "Login successful",
 		})
