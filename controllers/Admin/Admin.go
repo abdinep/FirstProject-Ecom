@@ -74,7 +74,7 @@ func Admin_Logout(c *gin.Context) {
 // @Tags Admin-Dashboard
 // @Accept json
 // @Produce  json
-// @Success 200 {json} json "Logout Successful".
+// @Success 200 {json} json "Data llisted".
 // @Failure 401 {json} json "Unauthorized."
 // @Router /admin/landingPage [get]
 func AdminLandingPage(c *gin.Context){
