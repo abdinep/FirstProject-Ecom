@@ -14,6 +14,7 @@ func AdminGroup(r *gin.RouterGroup) {
 
 	r.POST("/login", controllers.Login)
 	r.GET("/logout", controllers.Admin_Logout)
+	r.GET("/landingPage",middleware.JwtMiddleware(roleAdmin),controllers.AdminLandingPage)
 	//=========================== Admin user management ======================================
 
 	r.GET("/usermanagement", middleware.JwtMiddleware(roleAdmin), handlers.List_user)

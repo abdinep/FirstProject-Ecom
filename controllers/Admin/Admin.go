@@ -69,3 +69,34 @@ func Admin_Logout(c *gin.Context) {
 }
 
 //============================= END =======================================
+// @Summary Admin Landing Page
+// @Description Admin Landing Page
+// @Tags Admin-Dashboard
+// @Accept json
+// @Produce  json
+// @Success 200 {json} json "Logout Successful".
+// @Failure 401 {json} json "Unauthorized."
+// @Router /admin/landingPage [get]
+func AdminLandingPage(c *gin.Context){
+	// adminid := c.GetString("username")
+	var orders []models.OrderItem
+	count :=0
+	flag:=0
+	var total float64
+	initializers.DB.Preload("Order.User").Find(&orders)
+
+	for _,v := range orders{
+		if v.Orderstatus =="Order cancelled"{
+			count++
+		}else{
+			flag++
+		}
+		total +=v.Subtotal
+	}
+	c.JSON(200,gin.H{
+		"totalSale":total,
+		"totalOrder":flag,
+		"totalCancelled":count,
+		"status":200,
+	})
+}

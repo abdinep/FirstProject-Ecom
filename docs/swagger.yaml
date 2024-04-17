@@ -423,6 +423,25 @@ paths:
       summary: Delete Coupon
       tags:
       - Admin-CouponManagement
+  /admin/landingPage:
+    get:
+      consumes:
+      - application/json
+      description: Admin Landing Page
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Logout Successful".
+          schema:
+            type: json
+        "401":
+          description: Unauthorized.
+          schema:
+            type: json
+      summary: Admin Landing Page
+      tags:
+      - Admin-Dashboard
   /admin/login:
     post:
       consumes:

@@ -393,6 +393,35 @@
                 }
             }
         },
+        "/admin/landingPage": {
+            "get": {
+                "description": "Admin Landing Page",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin-Dashboard"
+                ],
+                "summary": "Admin Landing Page",
+                "responses": {
+                    "200": {
+                        "description": "Logout Successful\".",
+                        "schema": {
+                            "type": "json"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/login": {
             "post": {
                 "description": "Logs in the Admin with email and password, returns a token to be used for authentication",
