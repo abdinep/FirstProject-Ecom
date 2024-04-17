@@ -1914,19 +1914,19 @@ const docTemplate = `{
         "controllers.signupdata": {
             "type": "object",
             "properties": {
-                "email": {
+                "Mob": {
                     "type": "string"
                 },
                 "gender": {
                     "type": "string"
                 },
-                "mobile": {
+                "userEmail": {
                     "type": "string"
                 },
-                "name": {
+                "userName": {
                     "type": "string"
                 },
-                "password": {
+                "userPassword": {
                     "type": "string"
                 }
             }
@@ -2157,7 +2157,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8080",
+	Host:             "abdin.online",
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "swagger documentation for the application",

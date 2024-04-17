@@ -6,7 +6,7 @@
         "contact": {},
         "version": "1.0"
     },
-    "host": "localhost:8080",
+    "host": "abdin.online",
     "basePath": "/",
     "paths": {
         "/": {
@@ -1908,19 +1908,19 @@
         "controllers.signupdata": {
             "type": "object",
             "properties": {
-                "email": {
+                "Mob": {
                     "type": "string"
                 },
                 "gender": {
                     "type": "string"
                 },
-                "mobile": {
+                "userEmail": {
                     "type": "string"
                 },
-                "name": {
+                "userName": {
                     "type": "string"
                 },
-                "password": {
+                "userPassword": {
                     "type": "string"
                 }
             }

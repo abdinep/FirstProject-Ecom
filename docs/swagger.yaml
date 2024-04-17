@@ -14,15 +14,15 @@ definitions:
     type: object
   controllers.signupdata:
     properties:
-      email:
+      Mob:
         type: string
       gender:
         type: string
-      mobile:
+      userEmail:
         type: string
-      name:
+      userName:
         type: string
-      password:
+      userPassword:
         type: string
     type: object
   controllers.userlogin:
@@ -169,7 +169,7 @@ definitions:
     type: object
   models.OrderItem:
     type: object
-host: localhost:8080
+host: abdin.online
 info:
   contact: {}
   description: ecom application

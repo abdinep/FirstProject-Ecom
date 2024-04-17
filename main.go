@@ -17,7 +17,7 @@ import (
 // @title swagger documentation for the application
 // @version 1.0
 // @description ecom application
-// @host localhost:8080
+// @host abdin.online
 // @BasePath /
 func init() {
 	initializers.LoadEnvVariables()

@@ -84,11 +84,11 @@ func User_Logout(c *gin.Context) {
 
 // ========================= Sending OTP by clicking Signup =========================
 type signupdata struct {
-	Name     string
-	Email    string
-	Mobile   string
-	Password string
-	Gender   string
+	Name     string `json:"userName"`
+	Email    string `json:"userEmail"`
+	Mobile   string `json:"Mob"`
+	Password string `json:"userPassword"`
+	Gender   string `json:"gender"`
 }
 
 // @Summary User Signup
@@ -110,6 +110,7 @@ func Usersignup(c *gin.Context) {
 			"error":  "failed to bind json",
 			"status": 401,
 		})
+		return
 	}
 	hash, err := bcrypt.GenerateFromPassword([]byte(Signup.Password), 10)
 	if err != nil {
@@ -121,7 +122,7 @@ func Usersignup(c *gin.Context) {
 	Signup.Password = string(hash)
 	Otp = GenerateOtp()
 	check.Otp = Otp
-	fmt.Println("otp------->", Otp, Signup.Email)
+	fmt.Println("otp------->", Otp, "email----->", Signup.Email)
 	err = SendOtp(Signup.Email, Otp)
 	if err != nil {
 		c.JSON(401, gin.H{
@@ -201,29 +202,13 @@ func Otpcheck(c *gin.Context) {
 		})
 		return
 	}
-	userMap := make(map[string]interface{})
-	err := mapstructure.Decode(userData, &userMap)
-	if err != nil {
-		c.JSON(401, gin.H{
-			"error":  "Failed to insert user data to map",
-			"status": 401,
-		})
-		return
-	}
+	userMap := userData.(map[string]interface{})
 
 	phn := fmt.Sprintf("%v", userMap["phone"])
-	HashedPassword, err := bcrypt.GenerateFromPassword([]byte(userMap["password"].(string)), bcrypt.DefaultCost)
-	if err != nil {
-		c.JSON(401, gin.H{
-			"error":  "hashing error",
-			"status": 401,
-		})
-		return
-	}
 	signupData = models.User{
 		Name:     userMap["name"].(string),
 		Email:    userMap["email"].(string),
-		Password: string(HashedPassword),
+		Password: userMap["password"].(string),
 		Mobile:   phn,
 		Gender:   userMap["gender"].(string),
 	}
