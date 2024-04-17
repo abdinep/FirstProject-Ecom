@@ -2123,13 +2123,7 @@ const docTemplate = `{
                 "Amount": {
                     "type": "number"
                 },
-                "Expire": {
-                    "type": "string"
-                },
                 "OfferName": {
-                    "type": "string"
-                },
-                "created": {
                     "type": "string"
                 },
                 "productId": {
