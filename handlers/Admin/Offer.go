@@ -9,13 +9,15 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
-type addsoffer struct{
-	OfferName string  `json:"OfferName"`
-    Amount    float64 `json:"Amount"`
+
+type addsoffer struct {
+	OfferName string    `json:"OfferName"`
+	Amount    float64   `json:"Amount"`
 	Expire    time.Time `json:"Expire"`
 	ProductId int
 	Created   time.Time
 }
+
 // @Summary Add an offer for a product
 // @Description Add an offer for a specific product by providing its ID and offer details
 // @Tags Admin-OfferManagement
@@ -37,7 +39,14 @@ func AddOffer(c *gin.Context) {
 	} else {
 		offer.Created = time.Now()
 		offer.ProductId, _ = strconv.Atoi(productid)
-		if err := initializers.DB.Create(&offer); err.Error != nil {
+		podid, _ := strconv.Atoi(productid)
+		if err := initializers.DB.Create(&models.Offer{
+			ProductId: podid,
+			OfferName: offer.OfferName,
+			Amount:    offer.Amount,
+			Created:   offer.Created,
+			Expire:    offer.Expire,
+		}); err.Error != nil {
 			c.JSON(500, gin.H{"Error": "Failed to add offer"})
 			fmt.Println("Failed to add offer=====>", err.Error)
 		} else {
@@ -45,6 +54,7 @@ func AddOffer(c *gin.Context) {
 		}
 	}
 }
+
 // @Summary List offer
 // @Description List all offer for a specific product
 // @Tags Admin-OfferManagement
@@ -55,21 +65,31 @@ func AddOffer(c *gin.Context) {
 // @Router /admin/offer [get]
 func ViewOffer(c *gin.Context) {
 	var offer []models.Offer
+	var offerlist []gin.H
 	if err := initializers.DB.Find(&offer); err.Error != nil {
 		c.JSON(401, gin.H{"error": "Offer not found"})
 		return
-	} else {
-		c.JSON(200,gin.H{
-			"data":offer,
+	}
+	for _, v := range offer {
+		offerlist = append(offerlist, gin.H{
+			"offerName":   v.OfferName,
+			"offerAmount": v.Amount,
+			"productId":   v.ProductId,
+			"created":     v.Created,
+			"expire":      v.Expire,
 		})
 	}
+	c.JSON(200, gin.H{
+		"data":   offerlist,
+		"status": 200,
+	})
 
 }
 
 func OfferCalc(productid int, c *gin.Context) float64 {
 	var offercheck models.Product
 	var Discount float64 = 0
-	if err := initializers.DB.Joins("Offer").First(&offercheck,"products.id = ?", productid); err.Error != nil {
+	if err := initializers.DB.Joins("Offer").First(&offercheck, "products.id = ?", productid); err.Error != nil {
 		return Discount
 	} else {
 		percentage := offercheck.Offer.Amount
