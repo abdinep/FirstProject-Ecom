@@ -414,7 +414,7 @@ const docTemplate = `{
                 "summary": "Admin Landing Page",
                 "responses": {
                     "200": {
-                        "description": "Logout Successful\".",
+                        "description": "Data llisted\".",
                         "schema": {
                             "type": "json"
                         }
