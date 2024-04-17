@@ -38,7 +38,7 @@ func AdminGroup(r *gin.RouterGroup) {
 
 	r.POST("/category/addcategory", middleware.JwtMiddleware(roleAdmin), handlers.Category)
 	r.GET("/category", middleware.JwtMiddleware(roleAdmin), handlers.View_Category)
-	r.POST("/category/edit/:ID", middleware.JwtMiddleware(roleAdmin), handlers.Edit_Category)
+	r.PATCH("/category/edit/:ID", middleware.JwtMiddleware(roleAdmin), handlers.Edit_Category)
 	r.DELETE("/category/delete/:ID", middleware.JwtMiddleware(roleAdmin), handlers.Delete_Category)
 	// r.PATCH("/admin_panel/products/Recover/:ID",handlers.Undelete_Product)
 

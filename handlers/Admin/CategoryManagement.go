@@ -18,7 +18,7 @@ type  addCategoryForm struct {
 // @Tags Admin-CategoryManagement
 // @Accept json
 // @Produce  json
-// @Param addCategoryForm string true "New Category  Info"
+// @Param addCategoryForm body true "New Category  Info"
 // @Success 200 {json} json	"Added Category"
 // @Failure 401 {json} json "Failed to add Category"
 // @Router /admin/category/addcategory [post]
@@ -59,6 +59,11 @@ func View_Category(c *gin.Context) {
 }
 
 // ==================================== Editing Category ===========================================
+type editCategory struct{
+	Name        string `json:"categoryName"`
+    Description string `json:"catDescription"`
+    Status      string `json:"catStatus"`
+}
 // @Summary Edit Category 
 // @Description Admin  can Edit category
 // @Tags Admin-CategoryManagement
@@ -67,9 +72,10 @@ func View_Category(c *gin.Context) {
 // @Param  ID path string true "Category ID"
 // @Success 200 {json} json	"Edited Category"
 // @Failure 401 {json} json "Category not Found or Failed to Edit Category"
-// @Router /admin/category/edit/{ID} [post]
+// @Router /admin/category/edit/{ID} [patch]
 func Edit_Category(c *gin.Context) {
 	var edit models.Category
+	var editCategoryData editCategory
 	id := c.Param("ID")
 	result := initializers.DB.First(&edit, id)
 	fmt.Println("(===============", edit, "===========)(", id, "===================)")
@@ -79,13 +85,15 @@ func Edit_Category(c *gin.Context) {
 			"status":401,
 		})
 	} else {
-		err := c.ShouldBindJSON(&edit)
+		err := c.ShouldBindJSON(&editCategoryData)
 		if err != nil {
 			c.JSON(401, gin.H{
 				"error":"failed to bind json",
 				"status":401,
 			})
 		}
+		edit.Name = editCategoryData.Name
+		edit.Description = editCategoryData.Description
 		save := initializers.DB.Save(&edit)
 		if save.Error != nil {
 			c.JSON(401, gin.H{
