@@ -196,7 +196,7 @@ func Edit_Product(c *gin.Context) {
 // @Tags Admin-ProductManagement
 // @Accept json
 // @Produce json
-// @Param id path int true "Prouct ID"
+// @Param ID path int true "Prouct ID"
 // @Success 200 {json} json	"Product Deleted successfully"
 // @Failure 401 {json} json "Product cant be deleted"
 // @Router /admin/products/{ID} [delete]
