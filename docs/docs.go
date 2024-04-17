@@ -2125,26 +2125,8 @@ const docTemplate = `{
                 "coupon_code": {
                     "type": "string"
                 },
-                "delivery_charge": {
-                    "type": "integer"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "orderDate": {
-                    "type": "string"
-                },
-                "orderPrice": {
-                    "type": "integer"
-                },
                 "payment_method": {
                     "type": "string"
-                },
-                "updateDate": {
-                    "type": "string"
-                },
-                "userID": {
-                    "type": "integer"
                 }
             }
         },

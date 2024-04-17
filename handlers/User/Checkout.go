@@ -16,15 +16,9 @@ import (
 var Couponcheck models.Coupon
 
 type checkoutdetails struct {
-	ID             uint
-	UserID         int
-	AddressID      int    `json:"address_id"`
-	CouponCode     string `json:"coupon_code"`
-	OrderPrice     int
-	PaymentMethod  string `json:"payment_method"`
-	DeliveryCharge int    `json:"delivery_charge"`
-	OrderDate      time.Time
-	UpdateDate     time.Time
+	AddressID     int    `json:"address_id"`
+	CouponCode    string `json:"coupon_code"`
+	PaymentMethod string `json:"payment_method"`
 }
 
 // @Summary Checkout and place an order
@@ -70,7 +64,7 @@ func Checkout(c *gin.Context) {
 
 		if int(view.Quantity) > view.Product.Quantity {
 			pname = view.Product.Product_Name
-			fmt.Println("pname------->",pname)
+			fmt.Println("pname------->", pname)
 			return
 		}
 		Grandtotal += quantity_price
@@ -181,18 +175,17 @@ func Checkout(c *gin.Context) {
 		}
 	}
 	//========================= Order Table management ====================================
-
-	order = checkoutdetails{
-		ID:             uint(orderId),
-		UserID:         int(userid),
+	// ID,_ := strconv.Atoi(userid)
+	orderdata := models.Order{
 		PaymentMethod:  order.PaymentMethod,
 		AddressID:      order.AddressID,
 		CouponCode:     coup,
 		OrderPrice:     Grandtotal,
 		DeliveryCharge: DeliveryCharge,
 		OrderDate:      time.Now(),
+		UserID:         int(userid),
 	}
-	if err := tx.Create(&order); err.Error != nil {
+	if err := tx.Create(&orderdata); err.Error != nil {
 		tx.Rollback()
 		c.JSON(401, gin.H{
 			"error":  "Failed to Place Order",
@@ -253,7 +246,7 @@ func Checkout(c *gin.Context) {
 			"Delivery Charges": DeliveryCharge,
 			"message":          "Order Placed Succesfully",
 			"Grand Total ":     Grandtotal,
-			"status": 200,
+			"status":           200,
 		})
 	}
 
