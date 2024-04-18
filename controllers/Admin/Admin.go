@@ -64,7 +64,7 @@ func Login(c *gin.Context) {
 // @Router /admin/logout [get]
 func Admin_Logout(c *gin.Context) {
 
-	c.SetCookie("jwtTokenAdmin", "", -1, "", "", false, false)
+	c.SetCookie("jwtTokenAdmin", "", -1, "/", "abdin.online", false, false)
 	c.JSON(200, gin.H{"message": "Logout succesful"})
 }
 
@@ -78,7 +78,6 @@ func Admin_Logout(c *gin.Context) {
 // @Failure 401 {json} json "Unauthorized."
 // @Router /admin/landingPage [get]
 func AdminLandingPage(c *gin.Context){
-	// adminid := c.GetString("username")
 	var orders []models.OrderItem
 	count :=0
 	flag:=0
