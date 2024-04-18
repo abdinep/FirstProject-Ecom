@@ -72,7 +72,7 @@ func ListCoupon(c *gin.Context) {
 // @Tags Admin-CouponManagement
 // @Accept json
 // @Produce  json
-// @Param id path int true "Coupon ID"
+// @Param ID path int true "Coupon ID"
 // @Success 200 {json} json	"Deleted Coupons"
 // @Failure 401 {json} json "Coupon not Found or Failed to Delete Coupon"
 // @Router /admin/coupon/{ID} [delete]

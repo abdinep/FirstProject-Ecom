@@ -378,7 +378,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Coupon ID",
-                        "name": "id",
+                        "name": "ID",
                         "in": "path",
                         "required": true
                     }

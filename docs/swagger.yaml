@@ -406,7 +406,7 @@ paths:
       parameters:
       - description: Coupon ID
         in: path
-        name: id
+        name: ID
         required: true
         type: integer
       produces:
