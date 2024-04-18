@@ -11,8 +11,8 @@ import (
 )
 
 type addsoffer struct {
-	OfferName string    `json:"OfferName"`
-	Amount    float64   `json:"Amount"`
+	OfferName string  `json:"OfferName"`
+	Amount    float64 `json:"Amount"`
 }
 
 // @Summary Add an offer for a product
@@ -31,21 +31,31 @@ func AddOffer(c *gin.Context) {
 	productid := c.Param("ID")
 	c.ShouldBindJSON(&offer)
 	if err := initializers.DB.Where("id = ?", productid).First(&product); err.Error != nil {
-		c.JSON(500, gin.H{"Error": "Product not available"})
+		c.JSON(401, gin.H{
+			"error":  "Product not available",
+			"status": 401,
+		})
 		fmt.Println("Product not available======>", err.Error)
+		return
+	}
+
+	podid, _ := strconv.Atoi(productid)
+	if err := initializers.DB.Create(&models.Offer{
+		ProductId: podid,
+		OfferName: offer.OfferName,
+		Amount:    offer.Amount,
+		Created:   time.Now(),
+	}); err.Error != nil {
+		c.JSON(401, gin.H{
+			"error":  "Offer already existing",
+			"status": 401,
+		})
+		fmt.Println("Offer already existing=====>", err.Error)
 	} else {
-		podid, _ := strconv.Atoi(productid)
-		if err := initializers.DB.Create(&models.Offer{
-			ProductId: podid,
-			OfferName: offer.OfferName,
-			Amount:    offer.Amount,
-			Created:   time.Now(),
-		}); err.Error != nil {
-			c.JSON(500, gin.H{"Error": "Failed to add offer"})
-			fmt.Println("Failed to add offer=====>", err.Error)
-		} else {
-			c.JSON(200, gin.H{"Message": "Offer Added for the Product"})
-		}
+		c.JSON(200, gin.H{
+			"message": "Offer Added for the Product",
+			"status":  200,
+		})
 	}
 }
 
@@ -61,7 +71,10 @@ func ViewOffer(c *gin.Context) {
 	var offer []models.Offer
 	var offerlist []gin.H
 	if err := initializers.DB.Find(&offer); err.Error != nil {
-		c.JSON(401, gin.H{"error": "Offer not found"})
+		c.JSON(401, gin.H{
+			"error":  "Offer not found",
+			"status": 401,
+		})
 		return
 	}
 	for _, v := range offer {

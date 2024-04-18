@@ -39,10 +39,16 @@ func Coupon(c *gin.Context) {
 		ValidFrom:  coupon.ValidFrom,
 		ValidTo:    coupon.ValidTo,
 	}); err.Error != nil {
-		c.JSON(500, "Coupon already exist")
+		c.JSON(401, gin.H{
+			"error":  "Coupon already exist",
+			"status": 401,
+		})
 		fmt.Println("Coupon already exist", err.Error)
 	} else {
-		c.JSON(200, "New Coupon added")
+		c.JSON(200, gin.H{
+			"message": "New Coupon added",
+			"status":  200,
+		})
 	}
 }
 
@@ -56,14 +62,27 @@ func Coupon(c *gin.Context) {
 // @Router /admin/coupon [get]
 func ListCoupon(c *gin.Context) {
 	var coupon []models.Coupon
+	var couponList []gin.H
 	if err := initializers.DB.Find(&coupon); err.Error != nil {
-		c.JSON(500, gin.H{
-			"error": err.Error,
+		c.JSON(401, gin.H{
+			"error":  err.Error,
+			"status": 401,
 		})
 		return
 	}
+	for _, coupon := range coupon {
+		couponList = append(couponList, gin.H{
+			"Id":        coupon.ID,
+			"Code":      coupon.Code,
+			"Discount":  coupon.Discount,
+			"Condition": coupon.Coundition,
+			"CreatedAt": coupon.CreatedAt,
+			"UpdatedAt": coupon.UpdatedAt,
+		})
+	}
 	c.JSON(200, gin.H{
-		"data": coupon,
+		"data":   couponList,
+		"status": 200,
 	})
 }
 
@@ -81,12 +100,14 @@ func DeleteCoupon(c *gin.Context) {
 	couponId := c.Param("ID")
 	if err := initializers.DB.Where("id = ?", couponId).Delete(&coup); err.Error != nil {
 		c.JSON(400, gin.H{
-			"error": "Coupon not found",
+			"error":  "Coupon not found",
+			"status": 400,
 		})
 		return
 	}
 	c.JSON(200, gin.H{
 		"message": "Coupon Deleted",
+		"status":  200,
 	})
 
 }
