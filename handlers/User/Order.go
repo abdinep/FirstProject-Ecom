@@ -89,7 +89,7 @@ func View_Order_Details(c *gin.Context) {
 				"order_status":   view.Orderstatus,
 				"order_date":     view.Order.OrderDate,
 				"offer":          result,
-				"view":           view.Subtotal,
+				"Subtotal":           view.Subtotal,
 			})
 		}
 		c.JSON(200, gin.H{
