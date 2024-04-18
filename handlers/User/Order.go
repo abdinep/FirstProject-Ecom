@@ -88,14 +88,14 @@ func View_Order_Details(c *gin.Context) {
 				"order_quantity": view.OrderQuantity,
 				"order_status":   view.Orderstatus,
 				"order_date":     view.Order.OrderDate,
-				"grand_total":    GrandTotal,
 				"offer":          result,
 				"view":           view.Subtotal,
 			})
 		}
 		c.JSON(200, gin.H{
-			"data":   orderitemlist,
-			"status": 200,
+			"data":        orderitemlist,
+			"grand_total": GrandTotal,
+			"status":      200,
 		})
 	}
 }
