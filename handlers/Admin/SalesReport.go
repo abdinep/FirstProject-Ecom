@@ -75,7 +75,7 @@ func GenerateSalesReport(c *gin.Context) {
 	}
 	// row.AddCell().Value = strconv.Itoa(cancelCount)
 	//========================= Save Excel File ============================
-	path := "/home/home/Brototype/Brototype/brocamp/week-10/sales_report.xlsx"
+	path := "/home/ubuntu/FirstProject-Ecom/sales_report.xlsx"
 	if err := file.Save(path); err != nil {
 		c.JSON(401, gin.H{
 			"error":  "Failed to fetch sales data",
@@ -138,7 +138,7 @@ func SalesReportPDF(c *gin.Context) {
 	}
 
 	//===================== Save PDF file ===================================
-	pdfPath := "/home/home/Brototype/Brototype/brocamp/week-10/sales_report.pdf"
+	pdfPath := "/home/ubuntu/FirstProject-Ecom/sales_report.pdf"
 	if err := pdf.OutputFileAndClose(pdfPath); err != nil {
 		c.JSON(401, gin.H{
 			"error":  "Failed to generate PDF file",
