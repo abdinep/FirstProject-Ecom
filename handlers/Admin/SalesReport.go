@@ -4,7 +4,6 @@ import (
 	"ecom/initializers"
 	"ecom/models"
 	"fmt"
-	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -22,6 +21,7 @@ func SalesReport() {
 		}
 	}
 }
+
 // @Summary Generate Excel file  with sales report data
 // @Description  This can only be used by admin to  generate excel file of the sales report
 // @Tags Admin-SalesReport
@@ -34,8 +34,9 @@ func GenerateSalesReport(c *gin.Context) {
 
 	var OrderData []models.OrderItem
 	if err := initializers.DB.Preload("Product").Preload("Order.User").Find(&OrderData).Error; err != nil {
-		c.JSON(500, gin.H{
-			"error": "Failed to fetch sales data",
+		c.JSON(401, gin.H{
+			"error":  "Failed to fetch sales data",
+			"status": 401,
 		})
 		return
 	}
@@ -49,8 +50,9 @@ func GenerateSalesReport(c *gin.Context) {
 	file := xlsx.NewFile()
 	sheet, err := file.AddSheet("Sales Report")
 	if err != nil {
-		c.JSON(500, gin.H{
-			"Error": "Failed to create Excel sheet",
+		c.JSON(401, gin.H{
+			"error":  "Failed to create Excel sheet",
+			"status": 401,
 		})
 		return
 	}
@@ -76,7 +78,8 @@ func GenerateSalesReport(c *gin.Context) {
 	path := "/home/home/Brototype/Brototype/brocamp/week-10/sales_report.xlsx"
 	if err := file.Save(path); err != nil {
 		c.JSON(401, gin.H{
-			"Error": "Failed to fetch sales data",
+			"error":  "Failed to fetch sales data",
+			"status": 401,
 		})
 		return
 	}
@@ -84,9 +87,13 @@ func GenerateSalesReport(c *gin.Context) {
 	c.Writer.Header().Set("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 	c.File(path)
 
-	c.JSON(200, gin.H{"Message": "Excel file generated and downloaded successfully"})
+	c.JSON(200, gin.H{
+		"message": "Excel file generated and downloaded successfully",
+		"status":  200,
+	})
 	fmt.Println("Excel file generated and sent successfully")
 }
+
 // @Summary Generate PDF file  with sales report data
 // @Description  This can only be used by admin to  generate pdf file of the sales report
 // @Tags Admin-SalesReport
@@ -99,7 +106,8 @@ func SalesReportPDF(c *gin.Context) {
 	var OrderData []models.OrderItem
 	if err := initializers.DB.Preload("Product").Preload("Order.User").Find(&OrderData).Error; err != nil {
 		c.JSON(401, gin.H{
-			"error": "Failed to fetch sales data",
+			"error":  "Failed to fetch sales data",
+			"status": 401,
 		})
 		return
 	}
@@ -132,7 +140,11 @@ func SalesReportPDF(c *gin.Context) {
 	//===================== Save PDF file ===================================
 	pdfPath := "/home/home/Brototype/Brototype/brocamp/week-10/sales_report.pdf"
 	if err := pdf.OutputFileAndClose(pdfPath); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate PDF file"})
+		c.JSON(401, gin.H{
+			"error":  "Failed to generate PDF file",
+			"status": 401,
+			"result": err,
+		})
 		return
 	}
 	//====================== PDF file download ==============================
@@ -140,29 +152,9 @@ func SalesReportPDF(c *gin.Context) {
 	c.Writer.Header().Set("Content-Type", "application/pdf")
 	c.File(pdfPath)
 
-	c.JSON(200, gin.H{"Message": "PDF file generated and downloaded successfully"})
+	c.JSON(200, gin.H{
+		"message": "PDF file generated and downloaded successfully",
+		"status":  200,
+	})
 	fmt.Println("PDF file generated and sent successfully")
 }
-// func SearchReport(c *gin.Context){
-// 	searchQuery := c.Query("query")
-// 	query := initializers.DB
-// 	var items []models.Order
-// 	if searchQuery != ""{
-// 		if err := query.Where("order_date = ?",searchQuery).Find(&items); err.Error != nil{
-// 			c.JSON(500,gin.H{"Error":"Failed to get report"})
-// 			fmt.Println("Failed to get report====>",err.Error)
-// 			return
-// 		}
-// 	for _, value := range items{
-// 		c.JSON(200,gin.H{
-// 			"Date": value.OrderDate,
-// 			"OrderID": value.ID,
-// 			"Price": value.OrderPrice,
-// 		})
-// 	}
-// }
-// 	// switch sortBy {
-// 	// case "daily":
-// 	// 	query = query.Where("")
-// 	// }
-// }
