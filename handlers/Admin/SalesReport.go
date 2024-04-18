@@ -57,7 +57,7 @@ func GenerateSalesReport(c *gin.Context) {
 		return
 	}
 	//===================== Add headers to the excel sheet ===========================
-	headers := []string{"Order ID", "Customer Name", "Product Name", "Order Date", "Total Amount", "Order Status"}
+	headers := []string{"Order ID", "Product Name", "Order Date", "Total Amount", "Order Status"}
 	row := sheet.AddRow()
 	for _, header := range headers {
 		cell := row.AddCell()
@@ -67,7 +67,6 @@ func GenerateSalesReport(c *gin.Context) {
 	for _, sale := range OrderData {
 		row := sheet.AddRow()
 		row.AddCell().Value = strconv.Itoa(int(sale.OrderID))
-		row.AddCell().Value = sale.Order.User.Name
 		row.AddCell().Value = sale.Product.Product_Name
 		row.AddCell().Value = sale.Order.OrderDate.Format("2016-02-01")
 		row.AddCell().Value = fmt.Sprintf("%d", sale.Order.OrderPrice)
@@ -119,7 +118,7 @@ func SalesReportPDF(c *gin.Context) {
 	pdf.SetFont("Arial", "", 12)
 
 	//================== Add headers to the PDF ============================
-	headers := []string{"Order ID", "Customer", "Product", "Order Date", "Total Amount", "Order Status"}
+	headers := []string{"Order ID", "Product", "Order Date", "Total Amount", "Order Status"}
 	for _, header := range headers {
 		pdf.Cell(40, 10, header)
 	}
@@ -129,7 +128,6 @@ func SalesReportPDF(c *gin.Context) {
 
 	for _, sale := range OrderData {
 		pdf.Cell(40, 10, strconv.Itoa(int(sale.OrderID)))
-		pdf.Cell(40, 10, sale.Order.User.Name)
 		pdf.Cell(40, 10, sale.Product.Product_Name)
 		pdf.Cell(40, 10, sale.Order.OrderDate.Format("2016-02-01"))
 		pdf.Cell(40, 10, fmt.Sprintf("%.2f", sale.Subtotal))
