@@ -55,7 +55,7 @@ func Userlogin(c *gin.Context) {
 			fmt.Println("id======>", table.ID)
 			token = middleware.GenerateJwt(c, form.Email, Roleuser, table.ID)
 			fmt.Println("token----->", token)
-			c.SetCookie("jwtTokenUser", token, int((time.Hour * 5).Seconds()), "/", "abdin.online", false, false)
+			c.SetCookie("jwtTokenUser", token, int((time.Hour * 5).Seconds()), "/", "abdin.online", false, true)
 			c.JSON(200, gin.H{
 				"Message": "Welcome to Home page",
 				"Token":   token,
