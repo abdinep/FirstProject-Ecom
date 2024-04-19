@@ -60,27 +60,27 @@ func ViewOrderDetails(c *gin.Context) {
 		c.JSON(401, gin.H{
 			"error":  "Produt not found",
 			"status": 401,
+			"err":    err.Error,
 		})
 		return
-	} else {
-		subTotal := 0
-		for _, view := range orderitem {
-			subTotal = view.OrderQuantity * view.Product.Price
-			orderitemsList = append(orderitemsList, gin.H{
-				"id":            view.ID,
-				"user":          view.Order.User.Name,
-				"orderId":       view.OrderID,
-				"orderQuantity": view.OrderQuantity,
-				"productName":   view.Product.Product_Name,
-				"subTotal":      view.Subtotal,
-				"orderStatus":   view.Orderstatus,
-			})
-		}
-		c.JSON(200, gin.H{
-			"data":       orderitemsList,
-			"orderPrice": subTotal,
+	}
+	subTotal := 0
+	for _, view := range orderitem {
+		subTotal = view.OrderQuantity * view.Product.Price
+		orderitemsList = append(orderitemsList, gin.H{
+			"id":            view.ID,
+			"user":          view.Order.User.Name,
+			"orderId":       view.OrderID,
+			"orderQuantity": view.OrderQuantity,
+			"productName":   view.Product.Product_Name,
+			"subTotal":      view.Subtotal,
+			"orderStatus":   view.Orderstatus,
 		})
 	}
+	c.JSON(200, gin.H{
+		"data":       orderitemsList,
+		"orderPrice": subTotal,
+	})
 }
 
 type OrderStatus struct {
