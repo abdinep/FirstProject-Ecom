@@ -82,7 +82,7 @@ func ViewOrderDetails(c *gin.Context) {
 			"subTotal":        view.Subtotal,
 			"orderStatus":     view.Orderstatus,
 		})
-		subTotal += int(view.Subtotal)
+		subTotal += subTotal
 	}
 	c.JSON(200, gin.H{
 		"data":       orderitemsList,
