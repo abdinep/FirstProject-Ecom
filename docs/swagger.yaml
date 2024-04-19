@@ -566,7 +566,7 @@ paths:
       parameters:
       - description: Order ID
         in: path
-        name: id
+        name: ID
         required: true
         type: integer
       - description: Updated order status
@@ -597,7 +597,7 @@ paths:
       parameters:
       - description: Order ID
         in: path
-        name: id
+        name: ID
         required: true
         type: integer
       produces:

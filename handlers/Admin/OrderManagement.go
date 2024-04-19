@@ -21,7 +21,10 @@ func Admin_View_order(c *gin.Context) {
 	var orderData []gin.H
 	count := 0
 	if err := initializers.DB.Preload("Address.User").Find(&order); err.Error != nil {
-		c.JSON(500, "Failed to fetch order")
+		c.JSON(401, gin.H{
+			"error":  "failed to fetch order",
+			"status": 401,
+		})
 		return
 	}
 	for _, value := range order {
@@ -40,6 +43,7 @@ func Admin_View_order(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"data":        orderData,
 		"totalOrders": count,
+		"status":      200,
 	})
 }
 
@@ -60,7 +64,6 @@ func ViewOrderDetails(c *gin.Context) {
 		c.JSON(401, gin.H{
 			"error":  "Produt not found",
 			"status": 401,
-			"err":    err.Error,
 		})
 		return
 	}
@@ -80,6 +83,7 @@ func ViewOrderDetails(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"data":       orderitemsList,
 		"orderPrice": subTotal,
+		"status":     200,
 	})
 }
 

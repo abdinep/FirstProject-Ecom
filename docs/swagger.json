@@ -613,7 +613,7 @@
                     {
                         "type": "integer",
                         "description": "Order ID",
-                        "name": "id",
+                        "name": "ID",
                         "in": "path",
                         "required": true
                     }
@@ -651,7 +651,7 @@
                     {
                         "type": "integer",
                         "description": "Order ID",
-                        "name": "id",
+                        "name": "ID",
                         "in": "path",
                         "required": true
                     },
