@@ -17,7 +17,7 @@ import (
 // @Router /admin/bestsell [get]
 func BestSelling(c *gin.Context) {
 	sortBy := c.Query("sort")
-	// query := initializers.DB
+	var productData []gin.H
 	switch sortBy {
 	case "product":
 		var mostOrderedProduct []models.Product
@@ -33,12 +33,26 @@ func BestSelling(c *gin.Context) {
 			})
 			return
 		}
+		for _,value := range mostOrderedProduct {
+			productData = append(productData, gin.H{
+				"id":value.ID,
+				"product_name":value.Product_Name,
+				"price":value.Price,
+				"quantity":value.Quantity,
+				"size":value.Size,
+				"desciption":value.Description,
+				"offer":value.Offer,
+				"category":value.Category.Name,
+				"status":200,
+			})
+		}
 		c.JSON(200, gin.H{
-			"mostOrderedProduct":mostOrderedProduct,
+			"mostOrderedProduct":productData,
 			"status":200,
 		})
 	case "category":
 		var mostOrderedCategory []models.Category
+		var categoryData []gin.H
 		// c.JSON(200, mostOrderedCategory)
 		query := `SELECT c.id,c.name, COUNT(oi.order_quantity) as quantity
 				FROM order_items oi
@@ -51,8 +65,16 @@ func BestSelling(c *gin.Context) {
 			c.JSON(400, gin.H{"error": err})
 			return
 		}
+		for _,value := range mostOrderedCategory {
+			categoryData = append(categoryData, gin.H{
+				"id":value.ID,
+				"name":value.Name,
+				"description":value.Description,
+				"status":200,
+			})
+		}
 		c.JSON(200, gin.H{
-			"mostOrderedCategory":mostOrderedCategory,
+			"mostOrderedCategory":categoryData,
 			"status":200,
 		})
 	}
