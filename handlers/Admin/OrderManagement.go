@@ -85,8 +85,8 @@ func ViewOrderDetails(c *gin.Context) {
 		})
 		dis += int(view.Subtotal)
 		subTotal += subTotal
-		discountPrice = subTotal - dis
 	}
+	discountPrice = subTotal - dis
 	c.JSON(200, gin.H{
 		"data":       orderitemsList,
 		"orderPrice": subTotal,
