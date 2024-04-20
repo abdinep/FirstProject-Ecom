@@ -69,7 +69,7 @@ func ViewOrderDetails(c *gin.Context) {
 	}
 	subTotal := 0
 	for _, view := range orderitem {
-		subTotal = view.OrderQuantity * view.Product.Price
+		// subTotal = view.OrderQuantity * view.Product.Price
 		orderitemsList = append(orderitemsList, gin.H{
 			"id":              view.ID,
 			"user":            view.Order.Address.User.Name,
@@ -81,6 +81,7 @@ func ViewOrderDetails(c *gin.Context) {
 			"subTotal":        view.Subtotal,
 			"orderStatus":     view.Orderstatus,
 		})
+		subTotal += int(view.Subtotal)
 	}
 	c.JSON(200, gin.H{
 		"data":       orderitemsList,
