@@ -667,7 +667,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.OrderItem"
+                            "$ref": "#/definitions/handlers.orderStatus"
                         }
                     }
                 ],
@@ -2173,6 +2173,14 @@ const docTemplate = `{
                 }
             }
         },
+        "handlers.orderStatus": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
         "handlers.productRating": {
             "type": "object",
             "properties": {
@@ -2184,9 +2192,6 @@ const docTemplate = `{
                     "type": "integer"
                 }
             }
-        },
-        "models.OrderItem": {
-            "type": "object"
         }
     }
 }`

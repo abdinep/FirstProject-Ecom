@@ -128,6 +128,11 @@ definitions:
       categoryName:
         type: string
     type: object
+  handlers.orderStatus:
+    properties:
+      status:
+        type: string
+    type: object
   handlers.productRating:
     properties:
       rating_product:
@@ -135,8 +140,6 @@ definitions:
         type: integer
       rating_value:
         type: integer
-    type: object
-  models.OrderItem:
     type: object
 host: abdin.online
 info:
@@ -574,7 +577,7 @@ paths:
         name: order
         required: true
         schema:
-          $ref: '#/definitions/models.OrderItem'
+          $ref: '#/definitions/handlers.orderStatus'
       produces:
       - application/json
       responses:

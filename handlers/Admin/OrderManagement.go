@@ -100,7 +100,7 @@ type orderStatus struct {
 // @Accept json
 // @Produce json
 // @Param ID path int true "Order ID"
-// @Param order body orderstatus true "Updated order status"
+// @Param order body orderStatus true "Updated order status"
 // @Success 200 {json} json	"Listed all OrderDetails"
 // @Failure 401 {json} json "Order not Found or Failed to List Orders"
 // @Router /admin/order/{ID} [post]

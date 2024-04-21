@@ -661,7 +661,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.OrderItem"
+                            "$ref": "#/definitions/handlers.orderStatus"
                         }
                     }
                 ],
@@ -2167,6 +2167,14 @@
                 }
             }
         },
+        "handlers.orderStatus": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
         "handlers.productRating": {
             "type": "object",
             "properties": {
@@ -2178,9 +2186,6 @@
                     "type": "integer"
                 }
             }
-        },
-        "models.OrderItem": {
-            "type": "object"
         }
     }
 }
