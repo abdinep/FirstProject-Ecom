@@ -922,6 +922,15 @@ const docTemplate = `{
                     "Admin-UserManagement"
                 ],
                 "summary": "Block/Unblock User",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "ID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "User Status Updated",
@@ -951,6 +960,24 @@ const docTemplate = `{
                     "Admin-UserManagement"
                 ],
                 "summary": "Edit User",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "ID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "User Details",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.editUser"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "User updated successfully",
@@ -2169,6 +2196,26 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "categoryName": {
+                    "type": "string"
+                }
+            }
+        },
+        "handlers.editUser": {
+            "type": "object",
+            "properties": {
+                "Mob": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "userName": {
                     "type": "string"
                 }
             }
