@@ -97,17 +97,18 @@ func ProductDetails(c *gin.Context) {
 	var results float64
 
 	for _, value := range load {
+		results = handlers.OfferCalc(int(value.ID), c)
 		similiarproducts = append(similiarproducts, gin.H{
 			"message":             "similar products",
-			"category_id":         value.Category_id,
-			"product Name":        value.Product_Name,
-			"product Price":       value.Price,
-			"product size":        value.Size,
-			"product discription": value.Description,
+			"categoryId":         value.Category_id,
+			"productName":        value.Product_Name,
+			"productPrice":       value.Price,
+			"productSize":        value.Size,
+			"productDiscription": value.Description,
 			"category":            value.Category.Name,
+			"offerPrice": results,
 		})
 		fmt.Println("similar------------>", similiarproducts)
-		results = handlers.OfferCalc(int(value.ID), c)
 		fmt.Println("---->", results)
 	}
 	c.JSON(200, gin.H{
@@ -121,7 +122,7 @@ func ProductDetails(c *gin.Context) {
 		"stock":             stock,
 		"review":            reviews,
 		"similiar_products": similiarproducts,
-		"offer_price":       results,
+		"offer_price":       result,
 		"status":            200,
 	})
 }
