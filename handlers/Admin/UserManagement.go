@@ -43,7 +43,6 @@ func List_user(c *gin.Context) {
 }
 
 type editUser struct {
-	Status string `json:"status"`
 	Name   string `json:"userName"`
 	Email  string `son:"userEmail"`
 	Mobile string `json:"Mob"`
@@ -82,7 +81,6 @@ func Edit_User(c *gin.Context) {
 		})
 		return
 	}
-	userDetails.Status = edit.Status
 	userDetails.Email = edit.Email
 	userDetails.Name = edit.Name
 	userDetails.Mobile = edit.Mobile

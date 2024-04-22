@@ -38,12 +38,6 @@ definitions:
         type: integer
       description:
         type: string
-      imagePath1:
-        type: string
-      imagePath2:
-        type: string
-      imagePath3:
-        type: string
       price:
         type: integer
       prodName:
@@ -135,8 +129,6 @@ definitions:
       email:
         type: string
       gender:
-        type: string
-      status:
         type: string
       userName:
         type: string
@@ -737,7 +729,7 @@ paths:
       parameters:
       - description: Prouct ID
         in: path
-        name: id
+        name: ID
         required: true
         type: integer
       - description: Edit Product Data

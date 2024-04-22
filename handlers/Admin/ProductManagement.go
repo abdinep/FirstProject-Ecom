@@ -20,9 +20,6 @@ type ProductHandler struct {
 	Size         int    `json:"size"`
 	Category_id  uint   `json:"category"`
 	Description  string `json:"description"`
-	ImagePath1   string
-	ImagePath2   string
-	ImagePath3   string
 }
 
 // @Summary Add a new product
@@ -121,10 +118,12 @@ func View_Product(c *gin.Context) {
 			"Price":        v.Price,
 			"Quantity":     v.Quantity,
 			"Size":         v.Size,
+			"id":           v.ID,
 		})
 	}
 	c.JSON(200, gin.H{
 		"data": listproduct,
+		"status":200,
 	})
 }
 
@@ -136,9 +135,6 @@ type UpdateProduct struct {
 	Size         int    `json:"size"`
 	Category_id  uint   `json:"category"`
 	Description  string `json:"description"`
-	ImagePath1   string
-	ImagePath2   string
-	ImagePath3   string
 }
 
 // @Summary Edit Product Details
@@ -146,7 +142,7 @@ type UpdateProduct struct {
 // @Tags Admin-ProductManagement
 // @Accept json
 // @Produce json
-// @Param id path int true "Prouct ID"
+// @Param ID path int true "Prouct ID"
 // @Param  data body UpdateProduct true "Edit Product Data"
 // @Success 200 {json} json	"Product updated successfully"
 // @Failure 401 {json} json "Failed to update Product"

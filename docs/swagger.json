@@ -844,7 +844,7 @@
                     {
                         "type": "integer",
                         "description": "Prouct ID",
-                        "name": "id",
+                        "name": "ID",
                         "in": "path",
                         "required": true
                     },
@@ -2055,15 +2055,6 @@
                 "description": {
                     "type": "string"
                 },
-                "imagePath1": {
-                    "type": "string"
-                },
-                "imagePath2": {
-                    "type": "string"
-                },
-                "imagePath3": {
-                    "type": "string"
-                },
                 "price": {
                     "type": "integer"
                 },
@@ -2204,9 +2195,6 @@
                     "type": "string"
                 },
                 "gender": {
-                    "type": "string"
-                },
-                "status": {
                     "type": "string"
                 },
                 "userName": {

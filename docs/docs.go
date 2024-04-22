@@ -850,7 +850,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Prouct ID",
-                        "name": "id",
+                        "name": "ID",
                         "in": "path",
                         "required": true
                     },
@@ -2061,15 +2061,6 @@ const docTemplate = `{
                 "description": {
                     "type": "string"
                 },
-                "imagePath1": {
-                    "type": "string"
-                },
-                "imagePath2": {
-                    "type": "string"
-                },
-                "imagePath3": {
-                    "type": "string"
-                },
                 "price": {
                     "type": "integer"
                 },
@@ -2210,9 +2201,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "gender": {
-                    "type": "string"
-                },
-                "status": {
                     "type": "string"
                 },
                 "userName": {
