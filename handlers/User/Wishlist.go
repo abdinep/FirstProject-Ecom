@@ -23,7 +23,7 @@ func AddWishlist(c *gin.Context) {
 	var wishlist models.Wishlist
 	productid := c.Param("ID")
 	userid := c.GetUint("userID")
-	if err := initializers.DB.Where("user_id = ? AND product_id = ?", userid, productid).First(&wishlist); err.Error != nil {
+	if err := initializers.DB.Where("user_id = ? AND product_id = ? AND deleted_at = null", userid, productid).First(&wishlist); err.Error != nil {
 		wishlist.ProductID, _ = strconv.Atoi(productid)
 		wishlist.UserID = int(userid)
 		if err := initializers.DB.Create(&wishlist); err.Error != nil {
@@ -59,7 +59,7 @@ func ViewWishlist(c *gin.Context) {
 	var wishllist []models.Wishlist
 	var listWishlist []gin.H
 	userid := c.GetUint("userID")
-	if err := initializers.DB.Joins("Product").Where("user_id = ? AND deleted_at = null", userid).Find(&wishllist); err.Error != nil {
+	if err := initializers.DB.Joins("Product").Where("user_id = ?", userid).Find(&wishllist); err.Error != nil {
 		c.JSON(401, gin.H{
 			"error":  "No products in Wishlist",
 			"status": 401,
