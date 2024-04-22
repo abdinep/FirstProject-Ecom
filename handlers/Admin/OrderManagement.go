@@ -60,7 +60,7 @@ func ViewOrderDetails(c *gin.Context) {
 	var orderitem []models.OrderItem
 	var orderitemsList []gin.H
 	orderid := c.Param("ID")
-	if err := initializers.DB.Where("id = ?", orderid).Joins("Product.Category").Joins("Order.Address.User").Find(&orderitem); err.Error != nil {
+	if err := initializers.DB.Where("order_id = ?", orderid).Joins("Product.Category").Joins("Order.Address.User").Find(&orderitem); err.Error != nil {
 		c.JSON(401, gin.H{
 			"error":  "Produt not found",
 			"status": 401,
@@ -115,7 +115,7 @@ func ChangeOrderStatus(c *gin.Context) {
 		})
 		return
 	}
-	if err := initializers.DB.Where("order_id = ?", orderid).First(&update); err.Error != nil {
+	if err := initializers.DB.Where("id = ?", orderid).First(&update); err.Error != nil {
 		c.JSON(401, gin.H{
 			"error":  "Order not found",
 			"status": 401,
