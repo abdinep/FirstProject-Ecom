@@ -1559,7 +1559,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.UpdateProduct"
+                            "$ref": "#/definitions/handlers.profileEdit"
                         }
                     }
                 ],
@@ -2236,6 +2236,26 @@ const docTemplate = `{
                 },
                 "rating_value": {
                     "type": "integer"
+                }
+            }
+        },
+        "handlers.profileEdit": {
+            "type": "object",
+            "properties": {
+                "Mob": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "userEmail": {
+                    "type": "string"
+                },
+                "userName": {
+                    "type": "string"
+                },
+                "userPassword": {
+                    "type": "string"
                 }
             }
         }

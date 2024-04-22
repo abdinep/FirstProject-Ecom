@@ -54,7 +54,7 @@ type profileEdit struct {
 // @Tags User-Profile
 // @Accept json
 // @Produce json
-// @Param  data body UpdateProduct true "Edit User Profile"
+// @Param  data body profileEdit true "Edit User Profile"
 // @Success 200 {json} json "Edited User Details"
 // @Failure 401 {json} json "Failed to edit User Details"
 // @Router /user/profile [patch]

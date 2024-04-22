@@ -144,6 +144,19 @@ definitions:
       rating_value:
         type: integer
     type: object
+  handlers.profileEdit:
+    properties:
+      Mob:
+        type: string
+      gender:
+        type: string
+      userEmail:
+        type: string
+      userName:
+        type: string
+      userPassword:
+        type: string
+    type: object
 host: abdin.online
 info:
   contact: {}
@@ -1199,7 +1212,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/handlers.UpdateProduct'
+          $ref: '#/definitions/handlers.profileEdit'
       produces:
       - application/json
       responses:
