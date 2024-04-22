@@ -60,7 +60,7 @@ func Checkout(c *gin.Context) {
 	var pname string
 	for _, view := range cart {
 
-		quantity_price := int(view.Quantity) * (view.Product.Price - int(handlers.OfferCalc(view.Product_Id, c)))
+		quantity_price := (int(view.Quantity) * view.Product.Price) - int(handlers.OfferCalc(view.Product_Id, c))
 
 		if int(view.Quantity) > view.Product.Quantity {
 			pname = view.Product.Product_Name
@@ -87,12 +87,11 @@ func Checkout(c *gin.Context) {
 			coup = "No coupon added"
 			fmt.Println("Invalid Coupon=====>", err.Error)
 			return
-		} else {
-			Grandtotal -= int(Couponcheck.Discount)
-			coup = order.CouponCode
-			// c.JSON(200, "Coupon Added")
-			fmt.Println("check==================>", Couponcheck.Code, order.CouponCode)
 		}
+		Grandtotal -= int(Couponcheck.Discount)
+		coup = order.CouponCode
+		// c.JSON(200, "Coupon Added")
+		fmt.Println("check==================>", Couponcheck.Code, order.CouponCode)
 	}
 	fmt.Println("coupon=====>", Couponcheck.Code, order.CouponCode)
 	//========================== Address choosing ======================================
@@ -151,15 +150,14 @@ func Checkout(c *gin.Context) {
 			})
 			tx.Rollback()
 			return
-		} else {
-			c.JSON(200, gin.H{
-				"message":   "Continue to Payment",
-				"paymentID": OrderPaymentID,
-				"status":    200,
-			})	
 		}
-		fmt.Println("orderpayment:==>", OrderPaymentID)
-		fmt.Println("receipt====>", orderId)
+		c.JSON(200, gin.H{
+			"message":   "Continue to Payment",
+			"paymentID": OrderPaymentID,
+			"status":    200,
+		})
+		fmt.Println("orderpayment:------->", OrderPaymentID)
+		fmt.Println("receipt------------->", orderId)
 		if err := tx.Create(&models.Payment{
 			OrderID:       OrderPaymentID,
 			Receipt:       orderId,
@@ -184,9 +182,9 @@ func Checkout(c *gin.Context) {
 		DeliveryCharge: DeliveryCharge,
 		OrderDate:      time.Now(),
 		UserID:         int(userid),
-		ID:uint(orderId) ,
+		ID:             uint(orderId),
 	}
-	fmt.Println("orderdata--------->",orderdata)
+	fmt.Println("orderdata--------->", orderdata)
 	if err := tx.Create(&orderdata); err.Error != nil {
 		tx.Rollback()
 		c.JSON(401, gin.H{
