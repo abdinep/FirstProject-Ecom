@@ -1190,7 +1190,16 @@ paths:
       tags:
       - User-Profile
     patch:
+      consumes:
+      - application/json
       description: Edit user details
+      parameters:
+      - description: Edit User Profile
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.UpdateProduct'
       produces:
       - application/json
       responses:

@@ -40,17 +40,21 @@ func User_Details(c *gin.Context) {
 		})
 	}
 }
-type profileEdit struct{
+
+type profileEdit struct {
 	Name     string `json:"userName"`
-    Email    string `json:"userEmail"`
-    Mobile   string `json:"Mob"`
-    Password string `json:"userPassword"`
-    Gender   string `json:"gender"`
+	Email    string `json:"userEmail"`
+	Mobile   string `json:"Mob"`
+	Password string `json:"userPassword"`
+	Gender   string `json:"gender"`
 }
+
 // @Summary Edit user details
 // @Description Edit user details
 // @Tags User-Profile
+// @Accept json
 // @Produce json
+// @Param  data body UpdateProduct true "Edit User Profile"
 // @Success 200 {json} json "Edited User Details"
 // @Failure 401 {json} json "Failed to edit User Details"
 // @Router /user/profile [patch]
@@ -65,7 +69,7 @@ func Edit_Profile(c *gin.Context) {
 		})
 		fmt.Println("Failed to fetch data from DB=====>", err.Error)
 	} else {
-		if err := c.ShouldBindJSON(&edit); err != nil {
+		if err := c.ShouldBindJSON(&editdetails); err != nil {
 			c.JSON(401, gin.H{
 				"error":  "failed to bind profile details",
 				"status": 401,

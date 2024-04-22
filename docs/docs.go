@@ -1542,6 +1542,9 @@ const docTemplate = `{
             },
             "patch": {
                 "description": "Edit user details",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -1549,6 +1552,17 @@ const docTemplate = `{
                     "User-Profile"
                 ],
                 "summary": "Edit user details",
+                "parameters": [
+                    {
+                        "description": "Edit User Profile",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.UpdateProduct"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Edited User Details",
