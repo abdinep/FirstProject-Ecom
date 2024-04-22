@@ -725,7 +725,7 @@ paths:
       - application/json
       description: Editing all  details of a particular product
       parameters:
-      - description: Prouct ID
+      - description: Product ID
         in: path
         name: ID
         required: true
@@ -1023,7 +1023,7 @@ paths:
       summary: Store or update rating for a product
       tags:
       - User-Rating
-  /products/review/{ID}:
+  /products/review:
     post:
       consumes:
       - application/json
@@ -1035,8 +1035,8 @@ paths:
         required: true
         type: string
       - description: Product ID
-        in: path
-        name: product_id
+        in: query
+        name: ID
         required: true
         type: integer
       produces:

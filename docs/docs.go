@@ -849,7 +849,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Prouct ID",
+                        "description": "Product ID",
                         "name": "ID",
                         "in": "path",
                         "required": true
@@ -1291,7 +1291,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/products/review/{ID}": {
+        "/products/review": {
             "post": {
                 "description": "Store or update review for a product based on user input",
                 "consumes": [
@@ -1315,8 +1315,8 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Product ID",
-                        "name": "product_id",
-                        "in": "path",
+                        "name": "ID",
+                        "in": "query",
                         "required": true
                     }
                 ],
