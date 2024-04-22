@@ -22,7 +22,7 @@ func View_Orders(c *gin.Context) {
 	var order []models.Order
 	var listOrder []gin.H
 	userID := c.GetUint("userID")
-	if err := initializers.DB.Preload("User.Address").Where("user_id = ?", userID).Find(&order); err.Error != nil {
+	if err := initializers.DB.Preload("User").Preload("Address").Where("user_id = ?", userID).Find(&order); err.Error != nil {
 		c.JSON(401, gin.H{
 			"error":  "Failed to fetch order data",
 			"status": 401,
