@@ -132,7 +132,6 @@ type UpdateProduct struct {
 	Product_Name string `json:"prodName"`
 	Price        int    `json:"price"`
 	Size         int    `json:"size"`
-	Category_id  uint   `json:"category"`
 	Description  string `json:"description"`
 }
 
@@ -167,7 +166,6 @@ func Edit_Product(c *gin.Context) {
 		return
 	}
 	save := initializers.DB.Save(&models.Product{
-		Category_id:  edit.Category_id,
 		Description:  edit.Description,
 		Price:        edit.Price,
 		Product_Name: edit.Product_Name,
