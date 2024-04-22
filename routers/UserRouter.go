@@ -31,7 +31,7 @@ func UserGroup(r *gin.RouterGroup) {
 	r.GET("/", handlers.ProductLoadingPage)
 	r.GET("/:ID", handlers.ProductDetails)
 	r.POST("/products/rating", middleware.JwtMiddleware(Roleuser), handlers.RatingStrore)
-	r.POST("/products/review/:ID", middleware.JwtMiddleware(Roleuser), handlers.ReviewStore)
+	r.POST("/products/review", middleware.JwtMiddleware(Roleuser), handlers.ReviewStore)
 
 	//========================== User Address management =======================================
 

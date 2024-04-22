@@ -18,14 +18,14 @@ import (
 // @Accept json
 // @Produce json
 // @Param review formData string true "Review data"
-// @Param ID path int true "Product ID"
+// @Param ID query int true "Product ID"
 // @Success 200 {json} JSON "Thanks for your review"
 // @Failure 401 {json} JSON "Failed to bind data or failed to update review"
-// @Router /products/review/{ID} [post]
+// @Router /products/review [post]
 func ReviewStore(c *gin.Context) {
 	var reviewstore models.Review
 	userid := c.GetInt("userID")
-	productid, _ := strconv.Atoi(c.Param("ID"))
+	productid, _ := strconv.Atoi(c.Query("ID"))
 	fmt.Println("productID--------->",productid)
 	reviewstore.Time = time.Now().Format("2006-01-02")
 	reviewstore.UserId = userid
