@@ -142,7 +142,7 @@ type UpdateProduct struct {
 // @Tags Admin-ProductManagement
 // @Accept json
 // @Produce json
-// @Param ID path int true "Prouct ID"
+// @Param ID path int true "Product ID"
 // @Param  data body UpdateProduct true "Edit Product Data"
 // @Success 200 {json} json	"Product updated successfully"
 // @Failure 401 {json} json "Failed to update Product"
@@ -168,13 +168,12 @@ func Edit_Product(c *gin.Context) {
 		})
 		return
 	}
-	save := initializers.DB.Save(&models.Product{
-		Description:  edit.Description,
-		Price:        edit.Price,
-		Product_Name: edit.Product_Name,
-		Size:         edit.Size,
-		Category_id:  edit.Category,
-	})
+	editProduct.Category_id = edit.Category
+	editProduct.Description = edit.Description
+	editProduct.Price = edit.Price
+	editProduct.Product_Name = edit.Product_Name
+	editProduct.Size = edit.Size
+	save := initializers.DB.Save(&editProduct)
 	if save.Error != nil {
 		c.JSON(401, gin.H{
 			"error":  "Failed to update Product",
