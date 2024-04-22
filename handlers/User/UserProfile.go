@@ -7,6 +7,7 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // @Summary Get user details
@@ -76,10 +77,17 @@ func Edit_Profile(c *gin.Context) {
 			})
 			return
 		}
+		hash, err := bcrypt.GenerateFromPassword([]byte(editdetails.Password), 10)
+		if err != nil {
+			c.JSON(401, gin.H{
+				"error":  "Failed to hash password",
+				"status": 401,
+			})
+		}
 		edit.Email = editdetails.Email
 		edit.Name = editdetails.Name
 		edit.Mobile = editdetails.Mobile
-		edit.Password = editdetails.Password
+		edit.Password = string(hash)
 		edit.Gender = editdetails.Gender
 		if err := initializers.DB.Save(&edit); err.Error != nil {
 			c.JSON(401, gin.H{

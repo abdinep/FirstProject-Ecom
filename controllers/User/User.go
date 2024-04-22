@@ -47,11 +47,8 @@ func Userlogin(c *gin.Context) {
 	initializers.DB.First(&table, "email=?", strings.ToLower(form.Email))
 	fmt.Println("(=======================", table, ")(====================", form.Email, "==============)")
 
-	// err = bcrypt.CompareHashAndPassword([]byte(table.Password), []byte(form.Password))
-	// if err != nil {
-	// c.JSON(501, "invalid user name or password")
-	// }
-	if table.Password != form.Password {
+	err = bcrypt.CompareHashAndPassword([]byte(table.Password), []byte(form.Password))
+	if err != nil {
 		c.JSON(501, "invalid user name or password")
 	} else {
 		if table.Status == "Active" {
