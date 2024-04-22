@@ -119,6 +119,7 @@ func View_Product(c *gin.Context) {
 			"Quantity":     v.Quantity,
 			"Size":         v.Size,
 			"id":           v.ID,
+			"category":     v.Category.Name,
 		})
 	}
 	c.JSON(200, gin.H{
@@ -133,6 +134,7 @@ type UpdateProduct struct {
 	Price        int    `json:"price"`
 	Size         int    `json:"size"`
 	Description  string `json:"description"`
+	Category     uint   `json:"category"`
 }
 
 // @Summary Edit Product Details
@@ -170,6 +172,7 @@ func Edit_Product(c *gin.Context) {
 		Price:        edit.Price,
 		Product_Name: edit.Product_Name,
 		Size:         edit.Size,
+		Category_id:  edit.Category,
 	})
 	if save.Error != nil {
 		c.JSON(401, gin.H{
