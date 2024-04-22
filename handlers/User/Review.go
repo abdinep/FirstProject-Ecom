@@ -26,6 +26,7 @@ func ReviewStore(c *gin.Context) {
 	var reviewstore models.Review
 	userid := c.GetInt("userID")
 	productid, _ := strconv.Atoi(c.Param("ID"))
+	fmt.Println("productID--------->",productid)
 	reviewstore.Time = time.Now().Format("2006-01-02")
 	reviewstore.UserId = userid
 	reviewstore.Review = c.Request.FormValue("review")
