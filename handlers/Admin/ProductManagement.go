@@ -111,7 +111,7 @@ func View_Product(c *gin.Context) {
 	var View []models.Product
 	var listproduct []gin.H
 	//  var checkcategory models.Categories
-	initializers.DB.Find(&View)
+	initializers.DB.Joins("Category").Find(&View)
 	for _, v := range View {
 		listproduct = append(listproduct, gin.H{
 			"Product_Name": v.Product_Name,
