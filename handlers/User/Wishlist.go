@@ -60,7 +60,10 @@ func ViewWishlist(c *gin.Context) {
 	var listWishlist []gin.H
 	userid := c.GetUint("userID")
 	if err := initializers.DB.Joins("Product").Where("user_id = ?", userid).Find(&wishllist); err.Error != nil {
-		c.JSON(500, gin.H{"Error": "No products in Wishlist"})
+		c.JSON(401, gin.H{
+			"error":  "No products in Wishlist",
+			"status": 401,
+		})
 		fmt.Println("No products in Wishlist=====>", err.Error)
 	} else {
 		for _, v := range wishllist {
@@ -77,6 +80,7 @@ func ViewWishlist(c *gin.Context) {
 		})
 	}
 }
+
 // @Summary Remove product from wishlist
 // @Description Removes a product from the user's wishlist.
 // @Tags User-Wishlist
