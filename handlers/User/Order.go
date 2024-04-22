@@ -22,7 +22,7 @@ func View_Orders(c *gin.Context) {
 	var order []models.Order
 	var listOrder []gin.H
 	userID := c.GetUint("userID")
-	if err := initializers.DB.Preload("User").Where("user_id = ?", userID).Find(&order); err.Error != nil {
+	if err := initializers.DB.Preload("User.Address").Where("user_id = ?", userID).Find(&order); err.Error != nil {
 		c.JSON(401, gin.H{
 			"error":  "Failed to fetch order data",
 			"status": 401,
@@ -71,14 +71,13 @@ func View_Order_Details(c *gin.Context) {
 	} else {
 		subTotal := 0
 		var result float64
+		var TotalOffer float64
+		var orderitemlist []gin.H
 		for _, view := range orderitems {
 			subTotal = view.OrderQuantity * view.Product.Price
 			// count += 1
 			GrandTotal += subTotal
 			result = handlers.OfferCalc(view.ProductID, c)
-		}
-		var orderitemlist []gin.H
-		for _, view := range orderitems {
 			orderitemlist = append(orderitemlist, gin.H{
 				"id":             view.ID,
 				"order_id":       view.OrderID,
@@ -89,13 +88,15 @@ func View_Order_Details(c *gin.Context) {
 				"order_status":   view.Orderstatus,
 				"order_date":     view.Order.OrderDate,
 				"offer":          result,
-				"Subtotal":           view.Subtotal,
+				"Subtotal":       view.Subtotal,
 			})
+			TotalOffer += result
 		}
 		c.JSON(200, gin.H{
-			"data":        orderitemlist,
-			"grand_total": GrandTotal,
-			"status":      200,
+			"data":          orderitemlist,
+			"discountPrice": TotalOffer,
+			"grand_total":   GrandTotal - int(TotalOffer),
+			"status":        200,
 		})
 	}
 }
