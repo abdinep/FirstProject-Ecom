@@ -1295,7 +1295,7 @@ const docTemplate = `{
             "post": {
                 "description": "Store or update review for a product based on user input",
                 "consumes": [
-                    "application/json"
+                    "multipart/form-data"
                 ],
                 "produces": [
                     "application/json"

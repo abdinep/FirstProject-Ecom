@@ -15,7 +15,7 @@ import (
 // @Summary Store or update review for a product
 // @Description Store or update review for a product based on user input
 // @Tags User-Review
-// @Accept json
+// @Accept multipart/form-data
 // @Produce json
 // @Param review formData string true "Review data"
 // @Param ID query int true "Product ID"
