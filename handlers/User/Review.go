@@ -18,7 +18,7 @@ import (
 // @Accept json
 // @Produce json
 // @Param review formData string true "Review data"
-// @Param product_id path int true "Product ID"
+// @Param ID path int true "Product ID"
 // @Success 200 {json} JSON "Thanks for your review"
 // @Failure 401 {json} JSON "Failed to bind data or failed to update review"
 // @Router /products/review/{ID} [post]
