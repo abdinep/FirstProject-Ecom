@@ -162,7 +162,7 @@ func PymentInvoice(c *gin.Context) {
 	pdf.CellFormat(colWidth[5], lineHt, fmt.Sprintf("%.2d", Total), "1", 0, "L", false, 0, "")
 
 	//===================== Save PDF file ===================================
-	pdfPath := "/home/home/Brototype/Brototype/brocamp/week-10/Invoice.pdf"
+	pdfPath := "/home/ubuntu/FirstProject-Ecom/Invoice.pdf"
 	if err := pdf.OutputFileAndClose(pdfPath); err != nil {
 		c.JSON(401, gin.H{
 			"error":  "Failed to generate PDF file",
