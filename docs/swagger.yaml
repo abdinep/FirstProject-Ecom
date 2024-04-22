@@ -42,8 +42,6 @@ definitions:
         type: integer
       prodName:
         type: string
-      quantity:
-        type: integer
       size:
         type: integer
     type: object

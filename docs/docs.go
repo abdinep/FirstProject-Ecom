@@ -2067,9 +2067,6 @@ const docTemplate = `{
                 "prodName": {
                     "type": "string"
                 },
-                "quantity": {
-                    "type": "integer"
-                },
                 "size": {
                     "type": "integer"
                 }

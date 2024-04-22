@@ -122,8 +122,8 @@ func View_Product(c *gin.Context) {
 		})
 	}
 	c.JSON(200, gin.H{
-		"data": listproduct,
-		"status":200,
+		"data":   listproduct,
+		"status": 200,
 	})
 }
 
@@ -131,7 +131,6 @@ func View_Product(c *gin.Context) {
 type UpdateProduct struct {
 	Product_Name string `json:"prodName"`
 	Price        int    `json:"price"`
-	Quantity     int    `json:"quantity"`
 	Size         int    `json:"size"`
 	Category_id  uint   `json:"category"`
 	Description  string `json:"description"`
@@ -158,29 +157,34 @@ func Edit_Product(c *gin.Context) {
 			"status": 401,
 		})
 		return
-	} else {
-		err := c.ShouldBindJSON(&edit)
-		if err != nil {
-			c.JSON(401, gin.H{
-				"error":  "failed to bind json",
-				"status": 401,
-			})
-			return
-		}
-		save := initializers.DB.Save(&edit)
-		if save.Error != nil {
-			c.JSON(401, gin.H{
-				"error":  "Failed to update Product",
-				"status": 401,
-			})
-			return
-		} else {
-			c.JSON(200, gin.H{
-				"message": "Product updated successfully",
-				"status":  200,
-			})
-		}
 	}
+	err := c.ShouldBindJSON(&edit)
+	if err != nil {
+		c.JSON(401, gin.H{
+			"error":  "failed to bind json",
+			"status": 401,
+		})
+		return
+	}
+	save := initializers.DB.Save(&models.Product{
+		Category_id:  edit.Category_id,
+		Description:  edit.Description,
+		Price:        edit.Price,
+		Product_Name: edit.Product_Name,
+		Size:         edit.Size,
+	})
+	if save.Error != nil {
+		c.JSON(401, gin.H{
+			"error":  "Failed to update Product",
+			"status": 401,
+		})
+		return
+	}
+	c.JSON(200, gin.H{
+		"message": "Product updated successfully",
+		"status":  200,
+	})
+
 }
 
 //========================= END ================================
