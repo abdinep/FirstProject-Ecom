@@ -96,7 +96,7 @@ func Add_Quantity_Cart(c *gin.Context) {
 				c.JSON(200, gin.H{
 					"Quantity": add.Quantity,
 					"Message":  "Added one more quantity",
-					"status": 200,
+					"status":   200,
 				})
 			}
 		} else {
@@ -140,7 +140,7 @@ func Remove_Quantity_cart(c *gin.Context) {
 			c.JSON(200, gin.H{
 				"Quantity": dbremove.Quantity,
 				"Message":  "removed one more quantity",
-				"status": 200,
+				"status":   200,
 			})
 		}
 	}
@@ -166,36 +166,38 @@ func View_Cart(c *gin.Context) {
 			"status": 401,
 		})
 		fmt.Println("product not found=====>", err.Error)
-	} else {
-
-		count := 0
-		var offer float64
-		// id, _ := strconv.Atoi(id)
-		discount := 0
-		for _, view := range cart {
-			if view.User_id == int(id) {
-				quantity_price = int(view.Quantity) * (view.Product.Price - int(handlers.OfferCalc(view.Product_Id, c)))
-				Grandtotal += quantity_price
-				count += 1
-				// if view.Product.Offer.
-				discount += int(view.Quantity) * int(handlers.OfferCalc(view.Product_Id, c))
-				fmt.Println("---------->", discount, quantity_price)
-				offer += offer
-				listcart = append(listcart, gin.H{
-					"product_id":   view.Product_Id,
-					"product_name": view.Product.Product_Name,
-					"quantity":     view.Quantity,
-					"price":        view.Product.Price,
-				})
-
-			}
-		}
-		c.JSON(200, gin.H{
-			"data":       listcart,
-			"discount":   discount,
-			"grandTotal": Grandtotal - int(offer),
-		})
+		return
 	}
+
+	count := 0
+	var offer float64
+	// id, _ := strconv.Atoi(id)
+	discount := 0
+	for _, view := range cart {
+		if view.User_id == int(id) {
+			quantity_price = int(view.Quantity) * (view.Product.Price - int(handlers.OfferCalc(view.Product_Id, c)))
+			fmt.Println("quantityprice---------->", quantity_price)
+			Grandtotal += quantity_price
+			fmt.Println("Grandtotal------------->", Grandtotal)
+			count += 1
+			discount += int(view.Quantity) * int(handlers.OfferCalc(view.Product_Id, c))
+			fmt.Println("discount--------------->", discount)
+			offer += offer
+			listcart = append(listcart, gin.H{
+				"product_id":     view.Product_Id,
+				"product_name":   view.Product.Product_Name,
+				"quantity":       view.Quantity,
+				"price":          view.Product.Price,
+				"totalCartItems": count,
+			})
+
+		}
+	}
+	c.JSON(200, gin.H{
+		"data":       listcart,
+		"discount":   discount,
+		"grandTotal": Grandtotal - int(offer),
+	})
 }
 
 // @Summary Remove a product from the user's cart
@@ -221,7 +223,7 @@ func Remove_Cart_Product(c *gin.Context) {
 		} else {
 			c.JSON(200, gin.H{
 				"message": "Product removed from cart",
-				"status": 200,
+				"status":  200,
 			})
 		}
 	}
