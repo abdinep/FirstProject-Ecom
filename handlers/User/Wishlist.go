@@ -59,7 +59,7 @@ func ViewWishlist(c *gin.Context) {
 	var wishllist []models.Wishlist
 	var listWishlist []gin.H
 	userid := c.GetUint("userID")
-	if err := initializers.DB.Joins("Product").Find(&wishllist).Where("user_id = ?", userid); err.Error != nil {
+	if err := initializers.DB.Joins("Product").Where("user_id = ?", userid).Find(&wishllist); err.Error != nil {
 		c.JSON(500, gin.H{"Error": "No products in Wishlist"})
 		fmt.Println("No products in Wishlist=====>", err.Error)
 	} else {
