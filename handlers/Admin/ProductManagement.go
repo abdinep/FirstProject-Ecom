@@ -149,8 +149,9 @@ type UpdateProduct struct {
 // @Router /admin/products/{ID} [patch]
 func Edit_Product(c *gin.Context) {
 	var edit UpdateProduct
+	var editProduct models.Product
 	product := c.Param("ID")
-	result := initializers.DB.First(&edit, product)
+	result := initializers.DB.First(&editProduct, product)
 	fmt.Println("(===============", edit, "===========)(", product, "===================)")
 	if result.Error != nil {
 		c.JSON(401, gin.H{
