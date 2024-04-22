@@ -24,11 +24,11 @@ import (
 // @Router /products/review [post]
 func ReviewStore(c *gin.Context) {
 	var reviewstore models.Review
-	userid := c.GetInt("userID")
+	userid := c.GetUint("userID")
 	productid, _ := strconv.Atoi(c.Query("ID"))
 	fmt.Println("productID--------->",productid)
 	reviewstore.Time = time.Now().Format("2006-01-02")
-	reviewstore.UserId = userid
+	reviewstore.UserId = int(userid)
 	reviewstore.Review = c.Request.FormValue("review")
 	reviewstore.ProductId = uint(productid)
 	fmt.Println("-------->", productid, reviewstore.Time, reviewstore.UserId, reviewstore.Review)
