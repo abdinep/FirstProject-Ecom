@@ -88,7 +88,9 @@ func Checkout(c *gin.Context) {
 			fmt.Println("Invalid Coupon=====>", err.Error)
 			return
 		}
+		fmt.Println("before minus  discount------------>",Couponcheck.Discount,"-------->",Grandtotal)
 		Grandtotal -= int(Couponcheck.Discount)
+		fmt.Println("after minus discount-------->",Grandtotal)
 		coup = order.CouponCode
 		// c.JSON(200, "Coupon Added")
 		fmt.Println("check==================>", Couponcheck.Code, order.CouponCode)
