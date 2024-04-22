@@ -115,7 +115,7 @@ func ChangeOrderStatus(c *gin.Context) {
 		})
 		return
 	}
-	if err := initializers.DB.Where("id = ?", orderid).First(&update); err.Error != nil {
+	if err := initializers.DB.Where("order_id = ?", orderid).First(&update); err.Error != nil {
 		c.JSON(401, gin.H{
 			"error":  "Order not found",
 			"status": 401,
