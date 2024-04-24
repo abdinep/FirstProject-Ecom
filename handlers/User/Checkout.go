@@ -60,7 +60,7 @@ func Checkout(c *gin.Context) {
 	var pname string
 	for _, view := range cart {
 
-		quantity_price := (int(view.Quantity) * view.Product.Price) - int(handlers.OfferCalc(view.Product_Id, c))
+		quantity_price := (int(view.Quantity) * view.Product.Price) - (int(handlers.OfferCalc(view.Product_Id, c))*int(view.Quantity))
 
 		if int(view.Quantity) > view.Product.Quantity {
 			pname = view.Product.Product_Name
