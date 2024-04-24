@@ -232,7 +232,10 @@ func Otpcheck(c *gin.Context) {
 		session.Delete(cookie)
 		session.Save()
 		c.SetCookie("sessionID", "", -1, "", "", false, false)
-		c.JSON(200, "Successfully signed up")
+		c.JSON(200, gin.H{
+			"message": "Successfully signed up",
+			"status":  200,
+		})
 	}
 }
 

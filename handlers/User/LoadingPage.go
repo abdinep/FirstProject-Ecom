@@ -31,7 +31,7 @@ func ProductLoadingPage(c *gin.Context) {
 	for _, v := range load {
 		loads = append(loads, gin.H{
 			"product_name":     v.Product_Name,
-			"product_price":    v.Price,
+			"product_price":    v.Price-int(handlers.OfferCalc(int(v.ID), c)),
 			"product_category": v.Category.Name,
 			"product_id":       v.ID,
 		})
@@ -73,7 +73,7 @@ func ProductDetails(c *gin.Context) {
 	result := handlers.OfferCalc(int(product.ID), c)
 	fmt.Println("---->", result)
 	rating := Ratingcalc(productID, c)
-	fmt.Println("rating--------->",rating)
+	fmt.Println("rating--------->", rating)
 	stock := ""
 	if product.Quantity == 0 {
 		stock = "Out of stock"
@@ -99,14 +99,14 @@ func ProductDetails(c *gin.Context) {
 	for _, value := range load {
 		results = handlers.OfferCalc(int(value.ID), c)
 		similiarproducts = append(similiarproducts, gin.H{
-			"message":             "similar products",
+			"message":            "similar products",
 			"categoryId":         value.Category_id,
 			"productName":        value.Product_Name,
 			"productPrice":       value.Price,
 			"productSize":        value.Size,
 			"productDiscription": value.Description,
-			"category":            value.Category.Name,
-			"offerPrice": results,
+			"category":           value.Category.Name,
+			"offerPrice":         results,
 		})
 		fmt.Println("similar------------>", similiarproducts)
 		fmt.Println("---->", results)
@@ -114,16 +114,16 @@ func ProductDetails(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"product_name":        product.Product_Name,
 		"product_quantity":    product.Quantity,
-		"product_price":       product.Price,
+		"product_price":       product.Price - int(result),
 		"product_description": product.Description,
 		"product_size":        product.Size,
 		"product_category":    product.Category.Name,
-		"rating":            rating,
-		"stock":             stock,
-		"review":            reviews,
-		"similiar_products": similiarproducts,
-		"offer_price":       result,
-		"status":            200,
+		"rating":              rating,
+		"stock":               stock,
+		"review":              reviews,
+		"similiar_products":   similiarproducts,
+		"offer_price":         result,
+		"status":              200,
 	})
 }
 

@@ -188,7 +188,7 @@ func View_Cart(c *gin.Context) {
 				"product_id":   view.Product_Id,
 				"product_name": view.Product.Product_Name,
 				"quantity":     view.Quantity,
-				"price":        view.Product.Price,
+				"price":        view.Product.Price-int(handlers.OfferCalc(view.Product_Id, c)),
 			})
 			totalCartItems = count
 
@@ -198,6 +198,7 @@ func View_Cart(c *gin.Context) {
 		"data":           listcart,
 		"totalCartItems": totalCartItems,
 		"grandTotal":     Grandtotal - int(offer),
+		"discount":       discount,
 	})
 }
 
