@@ -77,7 +77,7 @@ func View_Order_Details(c *gin.Context) {
 			subTotal = view.OrderQuantity * view.Product.Price
 			// count += 1
 			GrandTotal += subTotal
-			result = handlers.OfferCalc(view.ProductID, c)
+			result = (handlers.OfferCalc(view.ProductID, c)) * float64(view.OrderQuantity)
 			orderitemlist = append(orderitemlist, gin.H{
 				"id":             view.ID,
 				"order_id":       view.OrderID,
