@@ -31,7 +31,7 @@ func ProductLoadingPage(c *gin.Context) {
 	for _, v := range load {
 		loads = append(loads, gin.H{
 			"product_name":     v.Product_Name,
-			"product_price":    v.Price-int(handlers.OfferCalc(int(v.ID), c)),
+			"product_price":    v.Price - int(handlers.OfferCalc(int(v.ID), c)),
 			"product_category": v.Category.Name,
 			"product_id":       v.ID,
 		})
@@ -115,6 +115,7 @@ func ProductDetails(c *gin.Context) {
 		"product_name":        product.Product_Name,
 		"product_quantity":    product.Quantity,
 		"product_price":       product.Price - int(result),
+		"original_price":      product.Price,
 		"product_description": product.Description,
 		"product_size":        product.Size,
 		"product_category":    product.Category.Name,
