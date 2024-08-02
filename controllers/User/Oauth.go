@@ -25,6 +25,9 @@ type GUser struct {
 	Picture       string `json:"picture"`
 }
 
+
+
+
 func OauthSetup() *oauth2.Config {
 	clientid := os.Getenv("CLIENTID")
 	clientsecret := os.Getenv("CLIENTSECRET")

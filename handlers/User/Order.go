@@ -132,6 +132,7 @@ func Cancel_Orders(c *gin.Context) {
 			return
 		}
 		canceledAmount := orderitem.Subtotal
+		fmt.Println("canceledAmount--------->",canceledAmount)
 		var paymentid models.Payment
 		initializers.DB.Where("order_id = ?", orderID).First(&paymentid)
 		// result := Paymentgateways.RefundCancelledAmount(paymentid.PaymentID,int(canceledAmount))
