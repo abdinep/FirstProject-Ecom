@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecom-app 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ecom-app
+  template:
+    metadata:
+      labels:
+        app: ecom-app
+    spec:
+      containers:
+      - name: ecom-app
+        image: abdinep/ecom-app
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8080
+        env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: ecommerce-secret
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ecommerce-secret
+                  key: DB_PASSWORD
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: ecommerce-secret
+                  key: DB_NAME
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: ecommerce-secret
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: ecommerce-secret
+                  key: DB_PORT
+            - name: DB_SSL
+              valueFrom:
+                secretKeyRef:
+                  name: ecommerce-secret
+                  key: DB_SSL
+            - name: APPEMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: ecommerce-secret
+                  key: APPEMAIL
+            - name: APPPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ecommerce-secret
+                  key: APPPASSWORD
+            - name: SECRETKEY
+              valueFrom:
+                secretKeyRef:
+                  name: ecommerce-secret
+                  key: SECRETKEY
+            - name: RAZOR_PAY_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ecommerce-secret
+                  key: RAZOR_PAY_KEY
+            - name: RAZOR_PAY_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: ecommerce-secret
+                  key: RAZOR_PAY_SECRET
+            - name: HOST_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: ecommerce-secret
+                  key: HOST_NAME
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  name: ecommerce-secret
+                  key: PORT
+      tolerations:
+        - key: "node.cloudprovider.kubernetes.io/uninitialized"
+          operator: "Exists"
+          effect: "NoSchedule"

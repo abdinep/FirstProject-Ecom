@@ -1,3 +1,5 @@
 #ignore .env
 .env
 docker-compose.yml
+postgres_secret.yml
+secret.yml
