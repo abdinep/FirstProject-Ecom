@@ -6,6 +6,7 @@ import (
 	"ecom/models"
 	"fmt"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -43,7 +44,7 @@ func Login(c *gin.Context) {
 		adminID := admin.ID
 		fmt.Println("==========>", admin.Email, admin.Password, adminID, "<=============")
 		token := middleware.GenerateJwt(c, log.Email, Adminrole, adminID)
-		c.SetCookie("jwtTokenAdmin", token, int((time.Hour * 1).Seconds()), "/", "abdin.online", false, false)
+		c.SetCookie("jwtTokenAdmin", token, int((time.Hour * 1).Seconds()), "/", os.Getenv("HOST_NAME"), false, false)
 		c.JSON(http.StatusOK, gin.H{
 			"message": "Login successful",
 		})
@@ -64,11 +65,11 @@ func Login(c *gin.Context) {
 // @Router /admin/logout [get]
 func Admin_Logout(c *gin.Context) {
 
-	c.SetCookie("jwtTokenAdmin", "", -1, "/", "abdin.online", false, false)
+	c.SetCookie("jwtTokenAdmin", "", -1, "/", os.Getenv("HOST_NAME"), false, false)
 	c.JSON(200, gin.H{"message": "Logout succesful"})
 }
 
-//============================= END =======================================
+// ============================= END =======================================
 // @Summary Admin Landing Page
 // @Description Admin Landing Page
 // @Tags Admin-Dashboard
@@ -77,25 +78,25 @@ func Admin_Logout(c *gin.Context) {
 // @Success 200 {json} json "Data llisted".
 // @Failure 401 {json} json "Unauthorized."
 // @Router /admin/landingPage [get]
-func AdminLandingPage(c *gin.Context){
+func AdminLandingPage(c *gin.Context) {
 	var orders []models.OrderItem
-	count :=0
-	flag:=0
+	count := 0
+	flag := 0
 	var total float64
 	initializers.DB.Preload("Order.User").Find(&orders)
 
-	for _,v := range orders{
-		if v.Orderstatus =="Order cancelled"{
+	for _, v := range orders {
+		if v.Orderstatus == "Order cancelled" {
 			count++
-		}else{
+		} else {
 			flag++
 		}
-		total +=v.Subtotal
+		total += v.Subtotal
 	}
-	c.JSON(200,gin.H{
-		"totalSale":total,
-		"totalOrder":flag,
-		"totalCancelled":count,
-		"status":200,
+	c.JSON(200, gin.H{
+		"totalSale":      total,
+		"totalOrder":     flag,
+		"totalCancelled": count,
+		"status":         200,
 	})
 }

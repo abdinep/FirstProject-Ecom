@@ -99,7 +99,7 @@ func GoogleCallback(c *gin.Context) {
 		// }
 		jwttoken = middleware.GenerateJwt(c, guser.Email, Roleuser, guser.ID)
 		fmt.Println("jwttoken------->", jwttoken)
-		c.SetCookie("jwtTokenUser", jwttoken, int((time.Hour * 5).Seconds()), "/", "localhost", false, true)
+		c.SetCookie("jwtTokenUser", jwttoken, int((time.Hour * 5).Seconds()), "/", "ab22ccb500e0848bfb3c4b8577f147ab-242380210.us-east-1.elb.amazonaws.com", false, true)
 		c.Redirect(303, "/")
 	}
 	fmt.Println("user ------------", user)

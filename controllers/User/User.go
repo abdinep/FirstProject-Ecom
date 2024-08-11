@@ -6,6 +6,7 @@ import (
 	"ecom/models"
 	"fmt"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
@@ -55,7 +56,7 @@ func Userlogin(c *gin.Context) {
 			fmt.Println("id======>", table.ID)
 			token = middleware.GenerateJwt(c, form.Email, Roleuser, table.ID)
 			fmt.Println("token----->", token)
-			c.SetCookie("jwtTokenUser", token, int((time.Hour * 5).Seconds()), "/", "abdin.online", false, false)
+			c.SetCookie("jwtTokenUser", token, int((time.Hour * 5).Seconds()), "/", "ab22ccb500e0848bfb3c4b8577f147ab-242380210.us-east-1.elb.amazonaws.com", false, false)
 			c.JSON(200, gin.H{
 				"Message": "Welcome to Home page",
 				"Token":   token,
@@ -77,7 +78,7 @@ func Userlogin(c *gin.Context) {
 // @Router /user/logout [get]
 func User_Logout(c *gin.Context) {
 
-	c.SetCookie("jwtTokenUser", "", -1, "/", "abdin.online", false, false)
+	c.SetCookie("jwtTokenUser", "", -1, "/", os.Getenv("HOST_NAME"), false, false)
 	c.JSON(200, gin.H{"message": "Logout succesful"})
 }
 
@@ -156,7 +157,7 @@ func Usersignup(c *gin.Context) {
 	session := sessions.Default(c)
 	session.Set("user"+Signup.Email, userDetails)
 	session.Save()
-	c.SetCookie("sessionID", "user"+Signup.Email, int((time.Hour * 5).Seconds()), "/", "abdin.online", false, false)
+	c.SetCookie("sessionID", "user"+Signup.Email, int((time.Hour * 5).Seconds()), "/", "", false, false)
 	c.JSON(200, gin.H{
 		"message": "OTP sent to your mail: " + Otp,
 		"status":  200,
